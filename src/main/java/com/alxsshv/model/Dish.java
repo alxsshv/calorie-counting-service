@@ -2,6 +2,8 @@ package com.alxsshv.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 /**Класс, описывает блюда, которые пользователь
  *  может употреблять в течение дня.
  * @author Шварёв Алексей
@@ -30,5 +32,34 @@ public class Dish {
     @Column(name = "carbohydrates_amount")
     private int carbohydratesAmount;
 
+    /**Метод описывает логику сравнения объектов класса Dish.
+     * @return возвращает false если объект с которым сравнивается
+     * экземпляр класса Dish равен null, если это объект
+     * другого класса, а так же если оба объекта относятся к классу Dish,
+     * но имеется отличие в значениях свойств объектов.
+     * Возвращает true если оба объекта не равны null, относятся к одному
+     * и тому же классу Dish и имеют одинаковые значения
+     * по каждому из свойств.*/
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Dish dish = (Dish) o;
+        return id == dish.id && title == dish.title
+                && calorieContent == dish.calorieContent
+                && proteinsAmount == dish.proteinsAmount
+                && fatsAmount == dish.fatsAmount
+                && carbohydratesAmount == dish.carbohydratesAmount;
+    }
 
+    /**Метод описывает алгоритм вычисления hash-кода объекта класса Dish.
+     * Для вычисления хеш-кода используются все свойства объекта класса Dish.
+     * @return возвращает целочисленное значение хеш-кода экземпляра класса Dish
+     * в диапазоне от -2147483648 до 2147483647*/
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, calorieContent,
+                proteinsAmount, fatsAmount, carbohydratesAmount);
+    }
 }
