@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**Класс предназначен для хранения информации
  * об одном приёме пищи пользователем.
@@ -28,13 +29,25 @@ public class FoodIntake {
     @Column(name = "user")
     private User user;
     /**Дата приема пищи пользователем.
-     * аннотации Timestamp не используются, чтобы
-     * пользователь мог расчитвать калории на любой день.*/
+     * Аннотации Timestamp не используются, чтобы
+     * пользователь мог рассчитывать калории на любой день.*/
     @Column(name = "date")
     private LocalDate date;
-    /**Map содержит id каждого блюда (ключ), употребляемого в
-     * процессе приема пищи и его количество.*/
-    @Column(name = "dishes")
-    private Map<Long, Integer> dishes;
+    /**Список содержит объекты {@link ServingSize}.
+     *  В списке хранятся съеденные за один
+     *  приём пищи блюда и их количество*/
+    @OneToMany(mappedBy = "foodIntake",
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "serving_sizes")
+    private List<ServingSize> servingSizes = new ArrayList<>();
 
+    /**Метод добавления количества съеденного блюда \
+     * в список servingSizes.
+     * @param servingSize - размер порции (блюдо и его количество).
+     * Данная реализация метода обеспечивает согласованность
+     * двустороннего отношения OneToMany - ManyToOne.*/
+     public void addServingSize(final ServingSize servingSize) {
+         servingSizes.add(servingSize);
+         servingSize.setFoodIntake(this);
+     }
 }

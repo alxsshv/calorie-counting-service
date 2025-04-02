@@ -11,8 +11,7 @@ import java.util.Objects;
 /**Класс, описывает блюда, которые пользователь
  *  может употреблять в течение дня.
  * @author Шварёв Алексей
- * @version 1.0
- *  */
+ * @version 1.0*/
 @Entity
 @Table(name = "dishes")
 @Getter
