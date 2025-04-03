@@ -15,14 +15,17 @@ import java.util.List;
 @Service
 public interface UserService {
     /**Метод создание записи о пользователе в БД.
-     *@param userDto - DTO для класса {@link com.alxsshv.model.User}.*/
+     *@param userDto - DTO для класса {@link com.alxsshv.model.User}.
+     * @exception jakarta.validation.ConstraintViolationException
+     * должно быть выброшено если пользователь с такми email
+     * уже существует.*/
     void createUser(@Valid UserDto userDto);
 
     /**Метод поиска записи о пользователе по id.
      * @param id - идентификатор пользователя в формате long.
      * @return возвращает объект класса {@link User}.
      * @exception jakarta.persistence.EntityNotFoundException
-     * выбрасывается если запись о пользователе с указанным
+     * должно выбрасываться если запись о пользователе с указанным
      * идентификатором (id) не найдена*/
     User getById(@Min(value = 1,
             message = "Неверный формат id") long id);
@@ -31,7 +34,7 @@ public interface UserService {
      * @param id - идентификатор пользователя в формате long.
      * @return возвращает DTO для класса {@link User}.
      * @exception jakarta.persistence.EntityNotFoundException
-     * выбрасывается если запись о пользователе с указанным
+     * должно выбрасываться если запись о пользователе с указанным
      * идентификатором (id) не найдена*/
     UserDto findById(@Min(value = 1,
             message = "Неверный формат id") long id);

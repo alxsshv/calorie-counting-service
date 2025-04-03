@@ -31,7 +31,7 @@ public class User {
     private String email;
     /**Возраст пользователя.*/
     @Column(name = "age")
-    private String age;
+    private int age;
     /**Вес пользователя в килограммах.*/
     @Column(name = "weight")
     private int weight;
@@ -43,7 +43,7 @@ public class User {
      * KEEPING_FIT("Поддержание"),
      * WEIGHT_GAIN("Набор массы").*/
     @Column(name = "goal")
-    private Goal goal;
+    private String goal;
 
     /**Метод описывает логику сравнения экземпляров класса User.
      * @return возвращает false если объект с которым сравнивается

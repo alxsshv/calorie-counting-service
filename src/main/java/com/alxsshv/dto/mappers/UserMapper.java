@@ -2,9 +2,7 @@ package com.alxsshv.dto.mappers;
 
 import com.alxsshv.dto.UserDto;
 import com.alxsshv.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING)
@@ -20,4 +18,7 @@ public interface UserMapper {
      * @return возвращает объект передачи данных
      * для класса User ({@link UserDto}) */
     UserDto toUserDto(User user);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateUserFromDto(UserDto dto, @MappingTarget User user);
 }

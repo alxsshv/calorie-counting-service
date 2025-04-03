@@ -3,6 +3,7 @@ server:
 
 spring:
   datasource:
+    platform: postgres
     url: jdbc:postgresql://localhost:5432/calorie_db
     username: alexei
     password: test
