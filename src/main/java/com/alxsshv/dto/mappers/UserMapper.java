@@ -11,6 +11,7 @@ public interface UserMapper {
      * @param userDto - объект передачи данных
      * для класса User ({@link UserDto}).
      * @return возвращает объект класса User.*/
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User toEntity(UserDto userDto);
 
     /**Метод преобразования в сущности {@link User} в UserDto.

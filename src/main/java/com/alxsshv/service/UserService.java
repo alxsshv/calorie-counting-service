@@ -2,6 +2,7 @@ package com.alxsshv.service;
 
 import com.alxsshv.dto.UserDto;
 import com.alxsshv.model.User;
+import com.alxsshv.service.validation.UserNotExist;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public interface UserService {
      * @exception jakarta.validation.ConstraintViolationException
      * должно быть выброшено если пользователь с такми email
      * уже существует.*/
-    void createUser(@Valid UserDto userDto);
+    void createUser(@Valid @UserNotExist UserDto userDto);
 
     /**Метод поиска записи о пользователе по id.
      * @param id - идентификатор пользователя в формате long.

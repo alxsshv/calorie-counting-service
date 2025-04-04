@@ -1,6 +1,7 @@
 package com.alxsshv.service.validation;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,4 +14,8 @@ import java.lang.annotation.Target;
 public @interface UserNotExist {
     String message() default "Пользователь с таким" +
             " адресом электронной почты уже существует";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
 }

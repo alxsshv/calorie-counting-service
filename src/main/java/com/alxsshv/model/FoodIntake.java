@@ -26,7 +26,8 @@ public class FoodIntake {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     /**Информация о пользователе.*/
-    @Column(name = "user")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
     /**Дата приема пищи пользователем.
      * Аннотации Timestamp не используются, чтобы

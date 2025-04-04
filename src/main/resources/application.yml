@@ -7,3 +7,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/calorie_db
     username: alexei
     password: test
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
