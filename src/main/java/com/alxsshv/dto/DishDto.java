@@ -18,11 +18,11 @@ public class DishDto {
     /**Название блюда.*/
     private String title;
     /**Калорийность блюда в килокалориях.*/
-    private int calorieContent;
+    private double calorieContent;
     /**Содержание белков.*/
-    private int proteinsAmount;
+    private double proteinsAmount;
     /**Содержание жиров.*/
-    private int fatsAmount;
+    private double fatsAmount;
     /**Содержание углеводов.*/
-    private int carbohydratesAmount;
+    private double carbohydratesAmount;
 }

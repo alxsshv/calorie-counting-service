@@ -26,18 +26,19 @@ public class Dish {
     /**Название блюда.*/
     @Column(name = "title")
     private String title;
-    /**Калорийность блюда в килокалориях.*/
+    /**Калорийность блюда в килокалориях
+     * в 100 граммах продукта.*/
     @Column(name = "calorie_content")
-    private int calorieContent;
-    /**Содержание белков.*/
+    private double calorieContent;
+    /**Содержание белков в 100 граммах продукта.*/
     @Column(name = "proteins_amount")
-    private int proteinsAmount;
-    /**Содержание жиров.*/
+    private double proteinsAmount;
+    /**Содержание жиров в 100 граммах продукта.*/
     @Column(name = "fats_amount")
-    private int fatsAmount;
-    /**Содержание углеводов.*/
+    private double fatsAmount;
+    /**Содержание углеводов в 100 граммах продукта.*/
     @Column(name = "carbohydrates_amount")
-    private int carbohydratesAmount;
+    private double carbohydratesAmount;
 
     /**Метод описывает логику сравнения объектов класса Dish.
      * @return возвращает false если объект с которым сравнивается

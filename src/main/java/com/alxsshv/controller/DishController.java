@@ -41,9 +41,19 @@ public class DishController {
     @ResponseStatus(HttpStatus.OK)
     public String updateDish(@RequestBody DishDto dishDto) {
         dishService.updateDish(dishDto);
-        String successMessage = "Данные о блюде: " + dishDto.getTitle()
+        String successMessage = "Сведения о блюде: " + dishDto.getTitle()
                 + " успешно обновлены";
         log.info(successMessage);
         return successMessage;
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteDish(@PathVariable("id") long id) {
+        dishService.deleteById(id);
+        String successMessage = "Запись о блюде успешно удалена";
+        log.info(successMessage);
+        return successMessage;
+    }
+
 }

@@ -33,6 +33,7 @@ public interface DishMapper {
      * @return возвращает объект передачи данных
      * для класса Dish ({@link DishDto}) */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Dish updateDishFromDishDto(@MappingTarget Dish dish, DishDto dishDto);
+    void updateDishFromDishDto(@MappingTarget Dish dish, DishDto dishDto);
+
 
 }
