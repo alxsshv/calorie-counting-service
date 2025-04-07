@@ -25,7 +25,7 @@ public class Dish {
     private int id;
     /**Название блюда.*/
     @Column(name = "title")
-    private int title;
+    private String title;
     /**Калорийность блюда в килокалориях.*/
     @Column(name = "calorie_content")
     private int calorieContent;

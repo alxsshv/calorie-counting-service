@@ -27,4 +27,12 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler
+    ResponseEntity<String> handleDataProcessingException(DataProcessingException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }

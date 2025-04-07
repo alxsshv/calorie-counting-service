@@ -1,7 +1,6 @@
 package com.alxsshv.controller;
 
 import com.alxsshv.dto.UserDto;
-import com.alxsshv.dto.mappers.UserMapper;
 import com.alxsshv.model.Goal;
 import com.alxsshv.model.User;
 import com.alxsshv.repository.UserRepository;
@@ -16,6 +15,8 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
+
+import java.util.Optional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest {
@@ -45,14 +46,24 @@ public class UserControllerTest {
 
     @BeforeEach
     public void fillDatabase() {
-        User user = new User();
-        user.setName("Иван");
-        user.setEmail("ivan@world.com");
-        user.setAge(20);
-        user.setWeight(75);
-        user.setHeight(185);
-        user.setGoal(Goal.KEEPING_FIT.getPseudonym());
-        userRepository.save(user);
+        User user1 = new User();
+        user1.setName("Иван");
+        user1.setEmail("ivan@world.com");
+        user1.setAge(20);
+        user1.setWeight(75);
+        user1.setHeight(185);
+        user1.setGoal(Goal.KEEPING_FIT);
+
+        User user2 = new User();
+        user2.setName("Сергей");
+        user2.setEmail("sergey@world.com");
+        user2.setAge(20);
+        user2.setWeight(75);
+        user2.setHeight(185);
+        user2.setGoal(Goal.WEIGHT_LOSS);
+
+        userRepository.save(user1);
+        userRepository.save(user2);
     }
 
     @AfterEach
@@ -71,7 +82,7 @@ public class UserControllerTest {
         userDto.setAge(22);
         userDto.setWeight(92);
         userDto.setHeight(180);
-        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setGoal("Похудение");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -377,18 +388,75 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test updateUser when send valid id and user found then get status 200 (success)")
-    public void testUpdateUserById_whenSendValidIdAndUserFound_thenGet200() {
+    @DisplayName("Test updateUser when send valid id and user found then updating success")
+    public void testUpdateUserById_whenSendValidIdAndUserFound_thenUpdatingSuccess() {
+        String updateEmail = "ivan1@world.com";
+        long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
         UserDto userDto = new UserDto();
-        userDto.setId(userRepository.findByEmail("ivan@world.com").orElseThrow().getId());
-        userDto.setName("Иван");
-        userDto.setEmail("ivan1@world.com");
-        userDto.setAge(20);
-        userDto.setWeight(75);
-        userDto.setHeight(185);
-        userDto.setGoal(Goal.KEEPING_FIT.getPseudonym());
-        template.put("http://localhost:" + port + "/api/v1/users/", userDto);
-        Assertions.assertTrue(userRepository.findByEmail("ivan1@world.com").isPresent());
+        userDto.setId(userId);
+        userDto.setName("Иван Иванов");
+        userDto.setEmail(updateEmail);
+        userDto.setAge(22);
+        userDto.setWeight(77);
+        userDto.setHeight(188);
+        userDto.setGoal(Goal.WEIGHT_GAIN.getPseudonym());
+        template.put("http://localhost:" + port + "/api/v1/users", userDto);
+        Optional<User> userOpt = userRepository.findByEmail(updateEmail);
+        Assertions.assertTrue(userOpt.isPresent());
+        Assertions.assertEquals(userId, userOpt.get().getId());
+        Assertions.assertEquals(userDto.getName(), userOpt.get().getName());
+        Assertions.assertEquals(userDto.getAge(), userOpt.get().getAge());
+        Assertions.assertEquals(userDto.getWeight(), userOpt.get().getWeight());
+        Assertions.assertEquals(userDto.getHeight(), userOpt.get().getHeight());
+        Assertions.assertTrue(userDto.getGoal()
+                .equalsIgnoreCase(userOpt.get().getGoal().getPseudonym()));
+    }
+
+    @Test
+    @DisplayName("Test updateUser when send valid id but email already exist then updating fail")
+    public void testUpdateUserById_whenSendValidIdAndEmailAlreadyExist_thenUpdatingFail() {
+        String emailForUpdate = "sergey@world.com";
+        long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
+        UserDto userDto = new UserDto();
+        userDto.setId(userId);
+        userDto.setName("Иван Иванов");
+        userDto.setEmail(emailForUpdate);
+        userDto.setAge(22);
+        userDto.setWeight(77);
+        userDto.setHeight(188);
+        userDto.setGoal(Goal.WEIGHT_GAIN.getPseudonym());
+        template.put("http://localhost:" + port + "/api/v1/users", userDto);
+        User updatableUser = userRepository.findById(userId).orElseThrow();
+        User emailForUpdateOwner = userRepository.findByEmail(emailForUpdate).orElseThrow();
+        Assertions.assertNotEquals(updatableUser.getId(), emailForUpdateOwner.getId());
+        Assertions.assertNotEquals(userDto.getName(), updatableUser.getName());
+        Assertions.assertEquals("Иван", updatableUser.getName());
+    }
+
+    @Test
+    @DisplayName("Test updateUser when send not valid email then updating fail")
+    public void testUpdateUserById_whenSendNotValidEmail_thenUpdatingFail() {
+        long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
+        UserDto userDto = new UserDto();
+        userDto.setId(userId);
+        userDto.setName("Иван Иванов");
+        userDto.setEmail("ivan1@worldcom");
+        userDto.setAge(22);
+        userDto.setWeight(77);
+        userDto.setHeight(188);
+        userDto.setGoal(Goal.WEIGHT_GAIN.getPseudonym());
+        template.put("http://localhost:" + port + "/api/v1/users", userDto);
+        User userFromDb = userRepository.findById(userId).orElseThrow();
+        Assertions.assertEquals("ivan@world.com", userFromDb.getEmail());
+    }
+
+    @Test
+    @DisplayName("test deleteUserById when send valid id then deleting success")
+    public void testDeleteUserById_whenSendValidId_thenDeletingSuccess() {
+        long userId = 1;
+        template.delete("http://localhost:" + port + "/api/v1/users/" + userId);
+        Optional<User> userOpt = userRepository.findById(userId);
+        Assertions.assertTrue(userOpt.isEmpty());
     }
 
 }

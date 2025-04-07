@@ -42,7 +42,7 @@ public class UserController {
     public String updateUser(@RequestBody final UserDto userDto) {
         userService.update(userDto);
         String successMessage = "Данные пользователя "
-                + userDto.getName() + "успешно обновлены";
+                + userDto.getName() + " успешно обновлены";
         log.info(successMessage);
         return successMessage;
     }

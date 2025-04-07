@@ -2,12 +2,12 @@ package com.alxsshv.service.implementation;
 
 import com.alxsshv.dto.UserDto;
 import com.alxsshv.dto.mappers.UserMapper;
+import com.alxsshv.exception.DataProcessingException;
 import com.alxsshv.model.User;
 import com.alxsshv.repository.UserRepository;
 import com.alxsshv.service.UserService;
 import com.alxsshv.service.validation.UserNotExist;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserMapper userMapper;
 
@@ -58,25 +57,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> findAll() {
         List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(user -> userMapper.toUserDto(user))
-                .toList();
+        return userMapper.toUserDtoList(users);
     }
 
     @Transactional
     @Override
     public void update(@Valid final UserDto userDto) {
-        User userFromDB = getById(userDto.getId());
-        if (!userFromDB.getEmail().equals(userDto.getEmail())){
+        User userFromDb = getById(userDto.getId());
+        if (!userFromDb.getEmail().equals(userDto.getEmail())){
             Optional<User> userOpt = userRepository.findByEmail(userDto.getEmail());
             if (userOpt.isPresent()) {
-                throw new IllegalArgumentException("Указанный адрес электронной " +
+                throw new DataProcessingException("Указанный адрес электронной " +
                         "почты привязан в другому пользователю. У двух пользователей " +
                         "не может быть одинаковых адресов электронной почты");
             }
         }
-        userMapper.updateUserFromDto(userDto, userFromDB);
-        userRepository.save(userFromDB);
+        userMapper.updateUserFromDto(userFromDb, userDto);
+        userRepository.save(userFromDb);
     }
 
     @Override

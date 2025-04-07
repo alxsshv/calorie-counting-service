@@ -47,5 +47,19 @@ public class UserDto {
     private int height;
     /**Цель из списка {@link Goal}.*/
     @NotNull(message = "Пожалуйста укажите цель подсчета калорий")
+    @NotEmpty(message = "Пожалуйста выбрите цель из возможных вариантов: похудение, поддержание, набор массы")
     private String goal;
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", weight=" + weight +
+                ", height=" + height +
+                ", goal='" + goal + '\'' +
+                '}';
+    }
 }

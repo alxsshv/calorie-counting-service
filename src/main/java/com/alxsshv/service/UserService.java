@@ -15,11 +15,8 @@ import java.util.List;
  * @version 1.0*/
 @Service
 public interface UserService {
-    /**Метод создание записи о пользователе в БД.
-     *@param userDto - DTO для класса {@link com.alxsshv.model.User}.
-     * @exception jakarta.validation.ConstraintViolationException
-     * должно быть выброшено если пользователь с такми email
-     * уже существует.*/
+    /**Метод создания записи о пользователе в БД.
+     * @param userDto - DTO для класса {@link com.alxsshv.model.User}.*/
     void createUser(@Valid @UserNotExist UserDto userDto);
 
     /**Метод поиска записи о пользователе по id.

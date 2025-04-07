@@ -5,6 +5,9 @@ import com.alxsshv.model.Goal;
 import com.alxsshv.model.User;
 import org.mapstruct.*;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
@@ -13,6 +16,7 @@ public interface UserMapper {
      * для класса User ({@link UserDto}).
      * @return возвращает объект класса User.*/
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "goal", qualifiedByName = "setUserGoal", source = "goal")
     User toEntity(UserDto userDto);
 
     /**Метод преобразования в сущности {@link User} в UserDto.
@@ -21,11 +25,20 @@ public interface UserMapper {
      * для класса User ({@link UserDto}) */
     UserDto toUserDto(User user);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateUserFromDto(UserDto dto, @MappingTarget User user);
+    List<UserDto> toUserDtoList(List<User> userList);
 
-//    @Named("setUserFoal")
-//    default Goal setUserGoal(String goal) {
-//        return Goal.valueOf(goal);
-//    }
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "goal", qualifiedByName = "setUserGoal", source = "goal")
+    void updateUserFromDto(@MappingTarget User user, UserDto dto);
+
+    /**Дефолтный метод для преобразования указанного строкового
+     * псеводнима цели, цель из перечисления {@link Goal}*/
+    @Named("setUserGoal")
+    default Goal setUserGoal(String goal) {
+        try {
+            return Goal.valueOf(goal);
+        } catch (IllegalArgumentException ex) {
+            return Goal.valueOfPseudonym(goal);
+        }
+    }
 }

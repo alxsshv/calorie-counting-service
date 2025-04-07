@@ -16,7 +16,7 @@ public class DishDto {
     /**Идентификатор блюда.*/
     private int id;
     /**Название блюда.*/
-    private int title;
+    private String title;
     /**Калорийность блюда в килокалориях.*/
     private int calorieContent;
     /**Содержание белков.*/

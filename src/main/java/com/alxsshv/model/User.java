@@ -43,7 +43,7 @@ public class User {
      * KEEPING_FIT("Поддержание"),
      * WEIGHT_GAIN("Набор массы").*/
     @Column(name = "goal")
-    private String goal;
+    private Goal goal;
 
     /**Метод описывает логику сравнения экземпляров класса User.
      * @return возвращает false если объект с которым сравнивается
@@ -64,6 +64,19 @@ public class User {
                 && Objects.equals(age, user.age) && goal == user.goal;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", weight=" + weight +
+                ", height=" + height +
+                ", goal='" + goal + '\'' +
+                '}';
+    }
+
     /**Метод описывает алгоритм вычисления hash-кода экземпляра класса User.
      * Для вычисления хеш-кода используются все поля экземпляра класса User.
      * @return возвращает целочисленное значение хеш-кода экземпляра класса User
@@ -71,5 +84,6 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, email, age, weight, height, goal);
+
     }
 }
