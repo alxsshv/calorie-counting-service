@@ -7,6 +7,7 @@ import com.alxsshv.repository.UserRepository;
 import com.alxsshv.service.UserService;
 import com.alxsshv.service.validation.UserNotExist;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +67,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(@Valid final UserDto userDto) {
         User userFromDB = getById(userDto.getId());
+        if (!userFromDB.getEmail().equals(userDto.getEmail())){
+            Optional<User> userOpt = userRepository.findByEmail(userDto.getEmail());
+            if (userOpt.isPresent()) {
+                throw new IllegalArgumentException("Указанный адрес электронной " +
+                        "почты привязан в другому пользователю. У двух пользователей " +
+                        "не может быть одинаковых адресов электронной почты");
+            }
+        }
         userMapper.updateUserFromDto(userDto, userFromDB);
         userRepository.save(userFromDB);
     }

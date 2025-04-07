@@ -75,16 +75,15 @@ public class UserControllerTest {
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
-        System.out.println(response.getBody());
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
         Assertions.assertTrue(userRepository.findByEmail(email).isPresent());
     }
 
     @Test
     @DisplayName("test addUser when send email field is incorrectly" +
-            "then return status 400 (Created)")
-    public void testAddUser_whenEmailFiledIsIncorrectly_thenReturn500() {
-        String email = "senya@world.com";
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenEmailFiledIsIncorrectly_thenReturn400() {
+        String email = "senyaworld.com";
         UserDto userDto = new UserDto();
         userDto.setName("Сеня");
         userDto.setEmail(email);
@@ -99,6 +98,297 @@ public class UserControllerTest {
         Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
     }
 
+    @Test
+    @DisplayName("test addUser when send email field is null" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenEmailFiledIsNull_thenReturn400() {
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setAge(22);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+    }
 
+    @Test
+    @DisplayName("test addUser when send email field is empty" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenEmailFiledIsEmpty_thenReturn400() {
+        String email = "";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(22);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    @DisplayName("test addUser when send user name is empty" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenNameIsEmpty_thenReturn400() {
+        String email = "senya@world.ru";
+        UserDto userDto = new UserDto();
+        userDto.setName("");
+        userDto.setEmail(email);
+        userDto.setAge(22);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when send user name is null" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenNameIsNull_thenReturn400() {
+        String email = "senya@world.ru";
+        UserDto userDto = new UserDto();
+        userDto.setEmail(email);
+        userDto.setAge(22);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when send user name length less 3 characters" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenNameLengthLess3_thenReturn400() {
+        String email = "senya@world.ru";
+        UserDto userDto = new UserDto();
+        userDto.setEmail(email);
+        userDto.setName("По");
+        userDto.setAge(22);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when send user name length is more 150 characters" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenNameMore150Chars_thenReturn400() {
+        String email = "senya@world.ru";
+        UserDto userDto = new UserDto();
+        userDto.setEmail(email);
+        userDto.setName("Александрина_Аполлинариевна_" +
+                "Семипополовигероверсалофедираковская-Христорождественская");
+        userDto.setAge(22);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when user age less then 1 year" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenAgeLessThen1_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(0);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when user age more then 120 years" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenAgeMoreThen120_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(121);
+        userDto.setWeight(92);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when user weight less then 1 kg" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenWeightLessThen1kg_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(35);
+        userDto.setWeight(0);
+        userDto.setHeight(180);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when user weight more then 200 kg" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenWeightMoreThen200kg_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(35);
+        userDto.setWeight(201);
+        userDto.setHeight(200);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when user height less then 50 cm" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenHeightLessThen50cm_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(35);
+        userDto.setWeight(100);
+        userDto.setHeight(49);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("test addUser when user height more then 280 cm" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenHeightMoreThen280cm_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(35);
+        userDto.setWeight(100);
+        userDto.setHeight(281);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test findAll when database stores one user then get" +
+            " status 200 (success) and one record in users list")
+    public void testFindAll_whenDatabaseStoresOneUser_thenGet200() {
+        ResponseEntity<User[]> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/users", User[].class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        int usersNumberInDatabase = (int) userRepository.count();
+        Assertions.assertEquals(usersNumberInDatabase, response.getBody().length);
+    }
+
+    @Test
+    @DisplayName("Test findAll when in database no user " +
+            "then get status 200 (success) and empty users list")
+    public void testFindAll_whenInDatabaseNoUsers_thenGet200() {
+        userRepository.deleteAll();
+        ResponseEntity<UserDto[]> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/users", UserDto[].class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        int usersNumberInDatabase = (int) userRepository.count();
+        Assertions.assertEquals(usersNumberInDatabase, response.getBody().length);
+    }
+
+    @Test
+    @DisplayName("Test findUserById when send valid id and user found then get status 200 (success)")
+    public void testFindUserById_whenSendValidIdAndUserFound_thenGet200() {
+        long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
+        ResponseEntity<UserDto> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/users/" + userId, UserDto.class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(userId, response.getBody().getId());
+    }
+
+    @Test
+    @DisplayName("Test findUserById when send valid id and user not found then get status 404 (not found)")
+    public void testFindUserById_whenSendValidIdAndUserNotFound_thenGet404() {
+        long userId = userRepository.count() + 999;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/users/" + userId, String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    @DisplayName("Test findUserById when send not valid id then get status 400 (bad request)")
+    public void testFindUserById_whenSendNotValidId_thenGet400() {
+        long userId = 0;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/users/" + userId, String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test updateUser when send valid id and user found then get status 200 (success)")
+    public void testUpdateUserById_whenSendValidIdAndUserFound_thenGet200() {
+        UserDto userDto = new UserDto();
+        userDto.setId(userRepository.findByEmail("ivan@world.com").orElseThrow().getId());
+        userDto.setName("Иван");
+        userDto.setEmail("ivan1@world.com");
+        userDto.setAge(20);
+        userDto.setWeight(75);
+        userDto.setHeight(185);
+        userDto.setGoal(Goal.KEEPING_FIT.getPseudonym());
+        template.put("http://localhost:" + port + "/api/v1/users/", userDto);
+        Assertions.assertTrue(userRepository.findByEmail("ivan1@world.com").isPresent());
+    }
 
 }

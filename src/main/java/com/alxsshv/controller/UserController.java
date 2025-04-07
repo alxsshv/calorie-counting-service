@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto findUserById(@PathVariable final long id) {
+    public UserDto findUserById(@PathVariable("id") final long id) {
         return userService.findById(id);
     }
 
@@ -49,7 +49,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteUser(@PathVariable final long id) {
+    public String deleteUser(@PathVariable("id") final long id) {
         userService.deleteById(id);
         String successMessage = "Запись о пользователе успешно удалена";
         log.info(successMessage);

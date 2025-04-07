@@ -17,6 +17,7 @@ public enum Goal {
     Goal(final String pseudonym) {
         this.pseudonym = pseudonym;
     }
+
     /**Рускоязычный псевдоним константы.*/
     private final String pseudonym;
 }

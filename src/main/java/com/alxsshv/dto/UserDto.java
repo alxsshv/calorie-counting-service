@@ -21,7 +21,7 @@ public class UserDto {
     private long id;
     /**Имя пользователя.*/
     @NotNull(message = "Имя пользователя не может быть пустым")
-    @Size(min = 3, max = 150,
+    @Size(min = 3, max = 80,
             message = "Неверный формат имени пользователя")
     private String name;
     /**Адрес электронной почты.*/
@@ -40,9 +40,9 @@ public class UserDto {
             "Вес должен быть указан в килограммах")
     private int weight;
     /**Рост пользователя в сантиметрах.*/
-    @Min(value = 50, message = "Некоректно указан" +
+    @Min(value = 50, message = "Некорректно указан" +
             " рост пользователя. Рост должен быть указан в сантиметрах")
-    @Max(value = 280, message = "Некоректно указан" +
+    @Max(value = 280, message = "Некорректно указан" +
             " рост пользователя. Рост должен быть указан в сантиметрах")
     private int height;
     /**Цель из списка {@link Goal}.*/

@@ -1,6 +1,7 @@
 package com.alxsshv.dto.mappers;
 
 import com.alxsshv.dto.UserDto;
+import com.alxsshv.model.Goal;
 import com.alxsshv.model.User;
 import org.mapstruct.*;
 
@@ -22,4 +23,9 @@ public interface UserMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UserDto dto, @MappingTarget User user);
+
+//    @Named("setUserFoal")
+//    default Goal setUserGoal(String goal) {
+//        return Goal.valueOf(goal);
+//    }
 }
