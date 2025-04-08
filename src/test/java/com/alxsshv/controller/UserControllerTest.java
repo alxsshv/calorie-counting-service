@@ -388,7 +388,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test updateUser when send valid id and user found then updating success")
+    @DisplayName("Test updateUser when send valid id and user found then update success")
     public void testUpdateUserById_whenSendValidIdAndUserFound_thenUpdatingSuccess() {
         String updateEmail = "ivan1@world.com";
         long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
@@ -413,7 +413,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test updateUser when send valid id but email already exist then updating fail")
+    @DisplayName("Test updateUser when send valid id but email already exist then update fails")
     public void testUpdateUserById_whenSendValidIdAndEmailAlreadyExist_thenUpdatingFail() {
         String emailForUpdate = "sergey@world.com";
         long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
@@ -434,7 +434,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test updateUser when send not valid email then updating fail")
+    @DisplayName("Test updateUser when send not valid email then update fails")
     public void testUpdateUserById_whenSendNotValidEmail_thenUpdatingFail() {
         long userId = userRepository.findByEmail("ivan@world.com").orElseThrow().getId();
         UserDto userDto = new UserDto();

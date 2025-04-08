@@ -64,6 +64,18 @@ public class User {
                 && Objects.equals(age, user.age) && goal == user.goal;
     }
 
+    /**Метод описывает алгоритм вычисления hash-кода экземпляра класса User.
+     * Для вычисления хеш-кода используются все поля экземпляра класса User.
+     * @return возвращает целочисленное значение хеш-кода экземпляра класса User
+     * в диапазоне от -2147483648 до 2147483647*/
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, age, weight, height, goal);
+
+    }
+    /**Метод преобразования экземпляра класса User в строку.
+     * @return строковое представление экземпляра класса User,
+     * содержащее наименование его полей и их значения*/
     @Override
     public String toString() {
         return "User{" +
@@ -77,13 +89,4 @@ public class User {
                 '}';
     }
 
-    /**Метод описывает алгоритм вычисления hash-кода экземпляра класса User.
-     * Для вычисления хеш-кода используются все поля экземпляра класса User.
-     * @return возвращает целочисленное значение хеш-кода экземпляра класса User
-     * в диапазоне от -2147483648 до 2147483647*/
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email, age, weight, height, goal);
-
-    }
 }

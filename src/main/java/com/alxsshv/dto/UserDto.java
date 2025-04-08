@@ -50,6 +50,9 @@ public class UserDto {
     @NotEmpty(message = "Пожалуйста выбрите цель из возможных вариантов: похудение, поддержание, набор массы")
     private String goal;
 
+    /**Метод преобразования экземпляра класса UserDto в строку.
+     * @return строковое представление экземпляра класса UserDto,
+     * содержащее наименование его полей и их значения*/
     @Override
     public String toString() {
         return "UserDto{" +

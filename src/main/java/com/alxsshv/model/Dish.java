@@ -70,4 +70,19 @@ public class Dish {
         return Objects.hash(id, title, calorieContent,
                 proteinsAmount, fatsAmount, carbohydratesAmount);
     }
+
+    /**Метод преобразования экземпляра класса Dish в строку.
+     * @return строковое представление экземпляра класса Dish,
+     * содержащее наименование его полей и их значения*/
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", calorieContent=" + calorieContent +
+                ", proteinsAmount=" + proteinsAmount +
+                ", fatsAmount=" + fatsAmount +
+                ", carbohydratesAmount=" + carbohydratesAmount +
+                '}';
+    }
 }
