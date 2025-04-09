@@ -1,9 +1,7 @@
 package com.alxsshv.dto;
 
-import com.alxsshv.model.ServingSize;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
