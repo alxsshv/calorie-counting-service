@@ -30,7 +30,7 @@ public class ServingSize {
     @Column(name = "amount")
     private int amount;
     /**Ссылка на приём пищи к которому относится
-     * запись о размере порции.*/
+     * запись о размере порции в граммах.*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_intake_id")
     private FoodIntake foodIntake;
