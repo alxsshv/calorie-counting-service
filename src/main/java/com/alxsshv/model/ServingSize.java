@@ -12,7 +12,7 @@ import lombok.Setter;
  *  @author Шварёв Алексей
  *  @version 1.0*/
 @Entity
-@Table(name = "serving_size")
+@Table(name = "serving_sizes")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -6,6 +6,7 @@ import com.alxsshv.dto.mappers.DishMapper;
 import com.alxsshv.model.*;
 import com.alxsshv.repository.DishRepository;
 import com.alxsshv.repository.FoodIntakeRepository;
+import com.alxsshv.repository.ServingSizeRepository;
 import com.alxsshv.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -32,6 +34,8 @@ public class FoodIntakeControllerTest {
     private UserRepository userRepository;
     @Autowired
     private DishRepository dishRepository;
+    @Autowired
+    private ServingSizeRepository servingSizeRepository;
     @Autowired
     private DishMapper dishMapper;
 
@@ -58,14 +62,23 @@ public class FoodIntakeControllerTest {
 
     @BeforeEach
     public void fillDatabase() {
-        User user = new User();
-        user.setName("John");
-        user.setAge(33);
-        user.setEmail("jhon@world.com");
-        user.setWeight(78);
-        user.setHeight(178);
-        user.setGoal(Goal.KEEPING_FIT);
-        userRepository.save(user);
+        User user1 = new User();
+        user1.setName("John");
+        user1.setAge(33);
+        user1.setEmail("jhon@world.com");
+        user1.setWeight(78);
+        user1.setHeight(178);
+        user1.setGoal(Goal.KEEPING_FIT);
+        userRepository.save(user1);
+
+        User user2 = new User();
+        user2.setName("jane");
+        user2.setAge(22);
+        user2.setEmail("jane@world.com");
+        user2.setWeight(78);
+        user2.setHeight(178);
+        user2.setGoal(Goal.KEEPING_FIT);
+        userRepository.save(user2);
 
         Dish dish1 = new Dish();
         dish1.setTitle("Блин");
@@ -88,23 +101,34 @@ public class FoodIntakeControllerTest {
         food1.setDish(dish1);
         food1.setAmount(400);
 
-        FoodIntake foodIntake = new FoodIntake();
-        foodIntake.addServingSize(food1);
-        foodIntake.setDate(LocalDate.now());
-        foodIntake.setUser(user);
-        foodIntakeRepository.save(foodIntake);
+        FoodIntake foodIntake1 = new FoodIntake();
+        foodIntake1.addServingSize(food1);
+        foodIntake1.setDate(LocalDate.now());
+        foodIntake1.setUser(user1);
+        foodIntakeRepository.save(foodIntake1);
+
+        ServingSize food2 = new ServingSize();
+        food1.setDish(dish2);
+        food1.setAmount(600);
+        FoodIntake foodIntake2 = new FoodIntake();
+        foodIntake2.addServingSize(food2);
+        foodIntake2.setDate(LocalDate.now());
+        foodIntake2.setUser(user1);
+        foodIntakeRepository.save(foodIntake2);
     }
 
     @AfterEach
     public void clearDatabase() {
+        foodIntakeRepository.deleteAll();
+        servingSizeRepository.deleteAll();
         userRepository.deleteAll();
         dishRepository.deleteAll();
-        foodIntakeRepository.deleteAll();
     }
 
     @Test
     @DisplayName("Test addFoodIntake when send valid data then get status created (201)")
     public void testAddFoodIntake_whenSendValidData_thenGet201() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
         ServingSizeDto food1 = new ServingSizeDto();
         food1.setDish(dishMapper.toDishDto(dishRepository.findByTitle("Блин").orElseThrow()));
         food1.setAmount(500);
@@ -116,6 +140,195 @@ public class FoodIntakeControllerTest {
 
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
         Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.CREATED));
+        Assertions.assertEquals(foodIntakeBeforeCount + 1, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test addFoodIntake when userId equals 0 then get status bad request (400)")
+    public void testAddFoodIntake_whenUserEquals0_thenGet400() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
+        ServingSizeDto food1 = new ServingSizeDto();
+        food1.setDish(dishMapper.toDishDto(dishRepository.findByTitle("Блин").orElseThrow()));
+        food1.setAmount(500);
+
+        FoodIntakeDto foodIntakeDto = new FoodIntakeDto();
+        foodIntakeDto.setServingSizes(List.of(food1));
+        foodIntakeDto.setDate(LocalDate.now());
+
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertEquals(foodIntakeBeforeCount, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test addFoodIntake when user not found then get status bad request (400)")
+    public void testAddFoodIntake_whenUserNotFound_thenGet400() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
+        ServingSizeDto food1 = new ServingSizeDto();
+        food1.setDish(dishMapper.toDishDto(dishRepository.findByTitle("Блин").orElseThrow()));
+        food1.setAmount(500);
+
+        FoodIntakeDto foodIntakeDto = new FoodIntakeDto();
+        foodIntakeDto.setServingSizes(List.of(food1));
+        foodIntakeDto.setDate(LocalDate.now());
+        foodIntakeDto.setUserId(userRepository.count() + 999);
+
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertEquals(foodIntakeBeforeCount, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test addFoodIntake when servingSizes is null then get status bad request (400)")
+    public void testAddFoodIntake_whenServingSizesIsNull_thenGet400() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
+        FoodIntakeDto foodIntakeDto = new FoodIntakeDto();
+        foodIntakeDto.setDate(LocalDate.now());
+        foodIntakeDto.setUserId(userRepository.findByEmail("jhon@world.com").orElseThrow().getId());
+
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertEquals(foodIntakeBeforeCount, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test addFoodIntake when servingSizes is empty then get status bad request (400)")
+    public void testAddFoodIntake_whenServingSizesIsEmpty_thenGet400() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
+        FoodIntakeDto foodIntakeDto = new FoodIntakeDto();
+        foodIntakeDto.setDate(LocalDate.now());
+        foodIntakeDto.setUserId(userRepository.findByEmail("jhon@world.com").orElseThrow().getId());
+        foodIntakeDto.setServingSizes(new ArrayList<>());
+
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertEquals(foodIntakeBeforeCount, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test addFoodIntake when servingSizes amount is less than 1 then get status bad request (400)")
+    public void testAddFoodIntake_whenServingSizeAmountLessThan1_thenGet400() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
+        ServingSizeDto food1 = new ServingSizeDto();
+        food1.setDish(dishMapper.toDishDto(dishRepository.findByTitle("Блин").orElseThrow()));
+        food1.setAmount(0);
+        FoodIntakeDto foodIntakeDto = new FoodIntakeDto();
+        foodIntakeDto.setServingSizes(List.of(food1));
+        foodIntakeDto.setDate(LocalDate.now());
+        foodIntakeDto.setUserId(userRepository.findByEmail("jane@world.com").orElseThrow().getId());
+
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertEquals(foodIntakeBeforeCount, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test addFoodIntake when servingSizes dish is null then get status bad request (400)")
+    public void testAddFoodIntake_whenServingSizeDishIsNull_thenGet400() {
+        long foodIntakeBeforeCount = foodIntakeRepository.count();
+        ServingSizeDto food1 = new ServingSizeDto();
+        food1.setAmount(300);
+        FoodIntakeDto foodIntakeDto = new FoodIntakeDto();
+        foodIntakeDto.setServingSizes(List.of(food1));
+        foodIntakeDto.setDate(LocalDate.now());
+        foodIntakeDto.setUserId(userRepository.findByEmail("jane@world.com").orElseThrow().getId());
+
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/food", foodIntakeDto, String.class);
+        long foodIntakeAfterCount = foodIntakeRepository.count();
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertEquals(foodIntakeBeforeCount, foodIntakeAfterCount);
+    }
+
+    @Test
+    @DisplayName("Test findAllByUserIdAndDate when send valid userId and yesterday's date then get empty food intake list")
+    public void testFindAllByUserIdAndDate_whenSendValidUserIdAndYesterdayDate_thenGetEmptyFoodIntakeList() {
+        User user = userRepository.findByEmail("jane@world.com").orElseThrow();
+        ServingSize food2 = new ServingSize();
+        food2.setDish(dishRepository.findByTitle("Суп").orElseThrow());
+        food2.setAmount(500);
+        FoodIntake foodIntake = new FoodIntake();
+        foodIntake.addServingSize(food2);
+        foodIntake.setDate(LocalDate.now());
+        foodIntake.setUser(user);
+        foodIntakeRepository.save(foodIntake);
+
+        ResponseEntity<FoodIntakeDto[]> response = template
+                .getForEntity("http://localhost:" + port +
+                        "/api/v1/food?user=" + user.getId() + "&date=" + LocalDate.now().minusDays(1),
+                        FoodIntakeDto[].class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(0, response.getBody().length);
+    }
+
+    @Test
+    @DisplayName("Test findAllByUserIdAndDate when date is not defined then get status bad request 400")
+    public void testFindAllByUserIdAndDate_whenDateIsNotDefined_thenGet400() {
+        User user = userRepository.findByEmail("jane@world.com").orElseThrow();
+        ServingSize food2 = new ServingSize();
+        food2.setDish(dishRepository.findByTitle("Суп").orElseThrow());
+        food2.setAmount(500);
+        FoodIntake foodIntake = new FoodIntake();
+        foodIntake.addServingSize(food2);
+        foodIntake.setDate(LocalDate.now());
+        foodIntake.setUser(user);
+        foodIntakeRepository.save(foodIntake);
+
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/food?user=" + user.getId(),
+                        String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    @DisplayName("Test findById when foodIntake found then get status OK and foodIntake")
+    public void testFindById_whenFoodIntakeFound_thenGet200() {
+        long foodIntakeId = 1L;
+        ResponseEntity<FoodIntakeDto> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/food/" + foodIntakeId, FoodIntakeDto.class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(foodIntakeId, response.getBody().getId());
+    }
+
+    @Test
+    @DisplayName("Test findById when foodIntake not found then get status not found (404)")
+    public void testFindById_whenFoodIntakeNotFound_thenGet404() {
+        long foodIntakeId = foodIntakeRepository.count() + 999;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/food/" + foodIntakeId, String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    @DisplayName("Test findById when send incorrect id  then get status bad request (400)")
+    public void testFindById_whenSendIncorrectId_thenGet404() {
+        long foodIntakeId = 0;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/food/" + foodIntakeId, String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test deleteById when foodIntake found  then delete success")
+    public void testDeleteById_whenFoodIntakeFound_thenDeleteSuccess() {
+        long countBeforeDeleting = foodIntakeRepository.count();
+        long foodIntakeId = 1L;
+        template.delete("http://localhost:" + port + "/api/v1/food/" + foodIntakeId);
+        long countAfterDeleting = foodIntakeRepository.count();
+        Assertions.assertNotEquals(countBeforeDeleting, countAfterDeleting);
     }
 }

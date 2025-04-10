@@ -15,7 +15,7 @@ import java.util.List;
  * @author Шварёв Алексей
  * @version 1.0*/
 @Entity
-@Table(name = "food_intake")
+@Table(name = "food_intakes")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class FoodIntake {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     /**Информация о пользователе.*/
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
     /**Дата приема пищи пользователем.
@@ -51,4 +51,14 @@ public class FoodIntake {
          servingSizes.add(servingSize);
          servingSize.setFoodIntake(this);
      }
+
+    @Override
+    public String toString() {
+        return "FoodIntake{" +
+                "id=" + id +
+                ", user=" + user +
+                ", date=" + date +
+                ", servingSizes=" + servingSizes +
+                '}';
+    }
 }

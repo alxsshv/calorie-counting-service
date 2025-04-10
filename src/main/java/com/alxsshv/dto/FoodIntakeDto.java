@@ -1,5 +1,7 @@
 package com.alxsshv.dto;
 
+import com.alxsshv.service.validation.UserIsPresent;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -23,9 +25,20 @@ import java.util.List;
 public class FoodIntakeDto {
     private long id;
     @Min(value = 1, message = "Неверное указан идентификатор пользователя")
+    @UserIsPresent
     private long userId;
-    @NotEmpty(message = "Дата приема пищи не может быть пустой")
     private LocalDate date;
     @NotEmpty(message = "Необходимо добавить хотябы одно блюдо")
+    @Valid
     private List<ServingSizeDto> servingSizes;
+
+    @Override
+    public String toString() {
+        return "FoodIntakeDto{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", date=" + date +
+                ", servingSizes=" + servingSizes +
+                '}';
+    }
 }

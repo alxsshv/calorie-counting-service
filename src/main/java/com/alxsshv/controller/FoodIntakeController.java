@@ -29,8 +29,8 @@ public class FoodIntakeController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FoodIntakeDto> findAllByUserAndDate(
-            @RequestParam("user") long userId,
-            @RequestParam("date") LocalDate date) {
+            @RequestParam(value = "user", defaultValue = "0") long userId,
+            @RequestParam(value = "date", defaultValue = "-999999999-01-01") LocalDate date) {
         return foodIntakeService.findAllByUserIdAndDate(userId, date);
     }
 
