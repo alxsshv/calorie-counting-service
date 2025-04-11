@@ -296,7 +296,7 @@ public class FoodIntakeControllerTest {
     @Test
     @DisplayName("Test findById when foodIntake found then get status OK and foodIntake")
     public void testFindById_whenFoodIntakeFound_thenGet200() {
-        long foodIntakeId = 1L;
+        long foodIntakeId = foodIntakeRepository.findAll().getFirst().getId();
         ResponseEntity<FoodIntakeDto> response = template
                 .getForEntity("http://localhost:" + port + "/api/v1/food/" + foodIntakeId, FoodIntakeDto.class);
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -329,6 +329,16 @@ public class FoodIntakeControllerTest {
         long foodIntakeId = 1L;
         template.delete("http://localhost:" + port + "/api/v1/food/" + foodIntakeId);
         long countAfterDeleting = foodIntakeRepository.count();
-        Assertions.assertNotEquals(countBeforeDeleting, countAfterDeleting);
+        Assertions.assertEquals(countBeforeDeleting - 1, countAfterDeleting);
+    }
+
+    @Test
+    @DisplayName("Test deleteById when foodIntake not found  then delete fail")
+    public void testDeleteById_whenFoodIntakeNotFound_thenDeleteFail() {
+        long countBeforeDeleting = foodIntakeRepository.count();
+        long foodIntakeId = countBeforeDeleting + 999;
+        template.delete("http://localhost:" + port + "/api/v1/food/" + foodIntakeId);
+        long countAfterDeleting = foodIntakeRepository.count();
+        Assertions.assertEquals(countBeforeDeleting, countAfterDeleting);
     }
 }

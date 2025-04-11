@@ -20,10 +20,10 @@ public enum Goal {
     }
 
     /**Метод позволяет осуществлять поиск целей по псевдониму.
-     * @param pseudonym - псеводним цели (кирилическое наименова цели)
-     * @return возвращает цель, соответствующую указанному псеводниму.
+     * @param pseudonym - псевдоним цели (кириллическое наименование цели)
+     * @return возвращает цель, соответствующую указанному псевдониму.
      * @exception IllegalArgumentException выбрасывается если не найдена цель,
-     * соответствующая указанному псведниму*/
+     * соответствующая указанному псевдониму*/
     public static Goal valueOfPseudonym(String pseudonym) {
         for (Goal goal : Goal.values()) {
             if (goal.getPseudonym().equalsIgnoreCase(pseudonym)) {
@@ -34,6 +34,6 @@ public enum Goal {
                 " Доступные цели: Похудение, Поддержание, Набор массы");
     }
 
-    /**Рускоязычный псевдоним константы.*/
+    /**Русcкоязычный псевдоним константы.*/
     private final String pseudonym;
 }
