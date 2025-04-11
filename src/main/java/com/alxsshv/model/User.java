@@ -44,38 +44,38 @@ public class User {
      * WEIGHT_GAIN("Набор массы").*/
     @Column(name = "goal")
     private Goal goal;
+    /**Пол пользователя.*/
+    @Column(name = "sex")
+    private Sex sex;
+    /**Дневная норма калорий в килокалориях*/
+    @Column(name = "calorie_norm")
+    private double calorieNorm;
 
-    /**Метод описывает логику сравнения экземпляров класса User.
-     * @return возвращает false если объект с которым сравнивается
-     * экземпляр класса User равен null, если это объект
-     * другого класса, а так же если оба объекта относятся к классу User,
-     * но имеется отличие в значениях свойств объектов.
-     * Возвращает true если оба объекта не равны null, относятся к одному
-     * и тому же классу и имеют одинаковые значения по каждому из свойств.*/
     @Override
-    public boolean equals(final Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && weight == user.weight
-                && height == user.height && Objects.equals(name, user.name)
+        return id == user.id && age == user.age
+                && weight == user.weight && height == user.height
+                && Objects.equals(name, user.name)
                 && Objects.equals(email, user.email)
-                && Objects.equals(age, user.age) && goal == user.goal;
+                && goal == user.goal && sex == user.sex;
     }
 
-    /**Метод описывает алгоритм вычисления hash-кода экземпляра класса User.
-     * Для вычисления хеш-кода используются все поля экземпляра класса User.
+    /**Метод описывает алгоритм вычисления hash-кода объекта класса User.
+     * Для вычисления хеш-кода используются все свойства объекта класса User.
      * @return возвращает целочисленное значение хеш-кода экземпляра класса User
      * в диапазоне от -2147483648 до 2147483647*/
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age, weight, height, goal);
-
+        return Objects.hash(id, name, email, age, weight, height, goal, sex);
     }
-    /**Метод преобразования экземпляра класса User в строку.
+
+    /**
+     * Метод преобразования экземпляра класса User в строку.
      * @return строковое представление экземпляра класса User,
-     * содержащее наименование его полей и их значения*/
+     * содержащее наименование его полей и их значения
+     */
     @Override
     public String toString() {
         return "User{" +
@@ -85,7 +85,8 @@ public class User {
                 ", age=" + age +
                 ", weight=" + weight +
                 ", height=" + height +
-                ", goal='" + goal + '\'' +
+                ", goal=" + goal +
+                ", sex=" + sex +
                 '}';
     }
 

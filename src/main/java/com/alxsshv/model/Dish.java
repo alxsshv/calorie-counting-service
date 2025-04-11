@@ -54,7 +54,7 @@ public class Dish {
             return false;
         }
         Dish dish = (Dish) o;
-        return id == dish.id && title == dish.title
+        return id == dish.id && title.equals(dish.title)
                 && calorieContent == dish.calorieContent
                 && proteinsAmount == dish.proteinsAmount
                 && fatsAmount == dish.fatsAmount

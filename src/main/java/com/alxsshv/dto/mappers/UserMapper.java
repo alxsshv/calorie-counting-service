@@ -2,6 +2,7 @@ package com.alxsshv.dto.mappers;
 
 import com.alxsshv.dto.UserDto;
 import com.alxsshv.model.Goal;
+import com.alxsshv.model.Sex;
 import com.alxsshv.model.User;
 import org.mapstruct.*;
 
@@ -17,6 +18,7 @@ public interface UserMapper {
      * @return возвращает объект класса User.*/
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "goal", qualifiedByName = "setUserGoal", source = "goal")
+    @Mapping(target = "sex", qualifiedByName = "setUserSex", source = "sex")
     User toEntity(UserDto userDto);
 
     /**Метод преобразования в сущности {@link User} в UserDto.
@@ -29,6 +31,7 @@ public interface UserMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "goal", qualifiedByName = "setUserGoal", source = "goal")
+    @Mapping(target = "sex", qualifiedByName = "setUserSex", source = "sex")
     void updateUserFromDto(@MappingTarget User user, UserDto dto);
 
     /**Дефолтный метод для преобразования указанного строкового
@@ -39,6 +42,17 @@ public interface UserMapper {
             return Goal.valueOf(goal);
         } catch (IllegalArgumentException ex) {
             return Goal.valueOfPseudonym(goal);
+        }
+    }
+
+    /**Дефолтный метод для преобразования указанного строкового
+     * псеводнима пола, пол выбирается из перечисления {@link com.alxsshv.model.Sex}*/
+    @Named("setUserSex")
+    default Sex setUserSex(String sex) {
+        try {
+            return Sex.valueOf(sex);
+        } catch (IllegalArgumentException ex) {
+            return Sex.valueOfPseudonym(sex);
         }
     }
 }

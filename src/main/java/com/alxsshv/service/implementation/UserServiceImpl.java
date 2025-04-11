@@ -6,6 +6,7 @@ import com.alxsshv.exception.DataProcessingException;
 import com.alxsshv.model.User;
 import com.alxsshv.repository.UserRepository;
 import com.alxsshv.service.UserService;
+import com.alxsshv.service.utils.BmrCalculator;
 import com.alxsshv.service.validation.UserNotExist;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -27,11 +28,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private BmrCalculator bmrCalculator;
 
     @Transactional
     @Override
     public void createUser(@Valid @UserNotExist final UserDto userDto) {
         User user = userMapper.toEntity(userDto);
+        double dailyCalorieNorm = bmrCalculator.calculate(user);
+        user.setCalorieNorm(dailyCalorieNorm);
         userRepository.save(user);
     }
 
@@ -73,6 +78,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         userMapper.updateUserFromDto(userFromDb, userDto);
+        userFromDb.setCalorieNorm(bmrCalculator.calculate(userFromDb));
         userRepository.save(userFromDb);
     }
 

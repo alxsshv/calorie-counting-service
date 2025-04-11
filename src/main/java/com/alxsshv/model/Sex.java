@@ -14,8 +14,8 @@ public enum Sex {
                 return sex;
             }
         }
-        throw new DataProcessingException("Указанная цель не доступна." +
-                " Доступные цели: Похудение, Поддержание, Набор массы");
+        throw new DataProcessingException("Неверно указан пол пользователя." +
+                " Пожалуйста укажите пол: мужчина или женщина");
     }
 
     Sex( final String pseudonym) {

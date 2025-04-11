@@ -2,6 +2,7 @@ package com.alxsshv.controller;
 
 import com.alxsshv.dto.UserDto;
 import com.alxsshv.model.Goal;
+import com.alxsshv.model.Sex;
 import com.alxsshv.model.User;
 import com.alxsshv.repository.UserRepository;
 import org.junit.jupiter.api.*;
@@ -52,7 +53,9 @@ public class UserControllerTest {
         user1.setAge(20);
         user1.setWeight(75);
         user1.setHeight(185);
+        user1.setSex(Sex.MAN);
         user1.setGoal(Goal.KEEPING_FIT);
+        user1.setCalorieNorm(1540);
 
         User user2 = new User();
         user2.setName("Сергей");
@@ -61,6 +64,8 @@ public class UserControllerTest {
         user2.setWeight(75);
         user2.setHeight(185);
         user2.setGoal(Goal.WEIGHT_LOSS);
+        user2.setSex(Sex.MAN);
+        user2.setCalorieNorm(1680);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -72,7 +77,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send valid user data" +
+    @DisplayName("Test addUser when send valid user data" +
             "then return status 201 (Created)")
     public void testAddUser_whenSendValidUserData_thenReturn201() {
         String email = "senya@world.com";
@@ -83,6 +88,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal("Похудение");
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -102,6 +108,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -110,7 +117,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send email field is null" +
+    @DisplayName("Test addUser when send email field is null" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenEmailFiledIsNull_thenReturn400() {
         UserDto userDto = new UserDto();
@@ -119,6 +126,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -126,7 +134,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send email field is empty" +
+    @DisplayName("Test addUser when send email field is empty" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenEmailFiledIsEmpty_thenReturn400() {
         String email = "";
@@ -137,6 +145,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -144,7 +153,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send user name is empty" +
+    @DisplayName("Test addUser when send user name is empty" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenNameIsEmpty_thenReturn400() {
         String email = "senya@world.ru";
@@ -155,6 +164,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -163,7 +173,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send user name is null" +
+    @DisplayName("Test addUser when send user name is null" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenNameIsNull_thenReturn400() {
         String email = "senya@world.ru";
@@ -173,6 +183,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -181,7 +192,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send user name length less 3 characters" +
+    @DisplayName("Test addUser when send user name length less 3 characters" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenNameLengthLess3_thenReturn400() {
         String email = "senya@world.ru";
@@ -192,6 +203,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -200,7 +212,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send user name length is more 150 characters" +
+    @DisplayName("Test addUser when send user name length is more 150 characters" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenNameMore150Chars_thenReturn400() {
         String email = "senya@world.ru";
@@ -212,6 +224,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -220,7 +233,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when user age less then 1 year" +
+    @DisplayName("Test addUser when user age less than 1 year" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenAgeLessThen1_thenReturn400() {
         String email = "senya@world.com";
@@ -231,6 +244,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -239,7 +253,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when user age more then 120 years" +
+    @DisplayName("Test addUser when user age more than 120 years" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenAgeMoreThen120_thenReturn400() {
         String email = "senya@world.com";
@@ -250,6 +264,7 @@ public class UserControllerTest {
         userDto.setWeight(92);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -258,7 +273,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when user weight less then 1 kg" +
+    @DisplayName("Test addUser when user weight less than 1 kg" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenWeightLessThen1kg_thenReturn400() {
         String email = "senya@world.com";
@@ -269,6 +284,7 @@ public class UserControllerTest {
         userDto.setWeight(0);
         userDto.setHeight(180);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -277,7 +293,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when user weight more then 200 kg" +
+    @DisplayName("Test addUser when user weight more than 200 kg" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenWeightMoreThen200kg_thenReturn400() {
         String email = "senya@world.com";
@@ -288,6 +304,7 @@ public class UserControllerTest {
         userDto.setWeight(201);
         userDto.setHeight(200);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -296,7 +313,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when user height less then 50 cm" +
+    @DisplayName("Test addUser when user height less than 50 cm" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenHeightLessThen50cm_thenReturn400() {
         String email = "senya@world.com";
@@ -307,6 +324,7 @@ public class UserControllerTest {
         userDto.setWeight(100);
         userDto.setHeight(49);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -315,7 +333,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when user height more then 280 cm" +
+    @DisplayName("Test addUser when user height more than 280 cm" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenHeightMoreThen280cm_thenReturn400() {
         String email = "senya@world.com";
@@ -326,6 +344,27 @@ public class UserControllerTest {
         userDto.setWeight(100);
         userDto.setHeight(281);
         userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("Мужчина");
+        ResponseEntity<String> response = template
+                .postForEntity("http://localhost:" + port + "/api/v1/users",
+                        userDto,String.class);
+        Assertions.assertTrue(response.getStatusCode().is4xxClientError());
+        Assertions.assertTrue(userRepository.findByEmail(email).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test addUser when send incorrect user sex" +
+            "then return status 400 (BAD_REQUEST)")
+    public void testAddUser_whenSendIncorrectUserSex_thenReturn400() {
+        String email = "senya@world.com";
+        UserDto userDto = new UserDto();
+        userDto.setName("Сеня");
+        userDto.setEmail(email);
+        userDto.setAge(35);
+        userDto.setWeight(100);
+        userDto.setHeight(200);
+        userDto.setGoal(Goal.WEIGHT_LOSS.getPseudonym());
+        userDto.setSex("sex");
         ResponseEntity<String> response = template
                 .postForEntity("http://localhost:" + port + "/api/v1/users",
                         userDto,String.class);
@@ -400,6 +439,7 @@ public class UserControllerTest {
         userDto.setWeight(77);
         userDto.setHeight(188);
         userDto.setGoal(Goal.WEIGHT_GAIN.getPseudonym());
+        userDto.setSex("Женщина");
         template.put("http://localhost:" + port + "/api/v1/users", userDto);
         Optional<User> userOpt = userRepository.findByEmail(updateEmail);
         Assertions.assertTrue(userOpt.isPresent());
@@ -410,6 +450,8 @@ public class UserControllerTest {
         Assertions.assertEquals(userDto.getHeight(), userOpt.get().getHeight());
         Assertions.assertTrue(userDto.getGoal()
                 .equalsIgnoreCase(userOpt.get().getGoal().getPseudonym()));
+        Assertions.assertTrue(userDto.getSex()
+                .equalsIgnoreCase(userOpt.get().getSex().getPseudonym()));
     }
 
     @Test
@@ -425,6 +467,7 @@ public class UserControllerTest {
         userDto.setWeight(77);
         userDto.setHeight(188);
         userDto.setGoal(Goal.WEIGHT_GAIN.getPseudonym());
+        userDto.setSex("Мужчина");
         template.put("http://localhost:" + port + "/api/v1/users", userDto);
         User updatableUser = userRepository.findById(userId).orElseThrow();
         User emailForUpdateOwner = userRepository.findByEmail(emailForUpdate).orElseThrow();
@@ -445,6 +488,7 @@ public class UserControllerTest {
         userDto.setWeight(77);
         userDto.setHeight(188);
         userDto.setGoal(Goal.WEIGHT_GAIN.getPseudonym());
+        userDto.setSex("Мужчина");
         template.put("http://localhost:" + port + "/api/v1/users", userDto);
         User userFromDb = userRepository.findById(userId).orElseThrow();
         Assertions.assertEquals("ivan@world.com", userFromDb.getEmail());

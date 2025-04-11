@@ -69,6 +69,8 @@ public class FoodIntakeControllerTest {
         user1.setWeight(78);
         user1.setHeight(178);
         user1.setGoal(Goal.KEEPING_FIT);
+        user1.setSex(Sex.MAN);
+        user1.setCalorieNorm(1620);
         userRepository.save(user1);
 
         User user2 = new User();
@@ -78,6 +80,8 @@ public class FoodIntakeControllerTest {
         user2.setWeight(78);
         user2.setHeight(178);
         user2.setGoal(Goal.KEEPING_FIT);
+        user2.setSex(Sex.WOMAN);
+        user2.setCalorieNorm(1310);
         userRepository.save(user2);
 
         Dish dish1 = new Dish();
@@ -95,7 +99,6 @@ public class FoodIntakeControllerTest {
         dish2.setFatsAmount(2);
         dish2.setCarbohydratesAmount(2);
         dishRepository.save(dish2);
-
 
         ServingSize food1 = new ServingSize();
         food1.setDish(dish1);
