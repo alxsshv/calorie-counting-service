@@ -107,5 +107,18 @@ public class Initializer {
         foodIntake3.setDate(LocalDate.now());
         foodIntake3.setUser(user2);
         foodIntakeRepository.save(foodIntake3);
+
+        ServingSize food7 = new ServingSize();
+        food7.setDish(dish1);
+        food7.setAmount(8);
+        ServingSize food8 = new ServingSize();
+        food8.setDish(dish2);
+        food8.setAmount(8);
+        FoodIntake foodIntake4 = new FoodIntake();
+        foodIntake4.addServingSize(food7);
+        foodIntake4.addServingSize(food8);
+        foodIntake4.setDate(LocalDate.now());
+        foodIntake4.setUser(user1);
+        foodIntakeRepository.save(foodIntake4);
     }
 }

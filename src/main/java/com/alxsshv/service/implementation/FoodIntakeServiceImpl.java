@@ -71,4 +71,12 @@ public class FoodIntakeServiceImpl implements FoodIntakeService {
         FoodIntake foodIntake = getById(FoodIntakeId);
         foodIntakeRepository.delete(foodIntake);
     }
+
+    public int getFoodInCount(long userId, LocalDate date) {
+        return foodIntakeRepository.getCount(userId, date);
+    }
+
+    public double getFoodInCalorieSum(long userId, LocalDate date) {
+        return foodIntakeRepository.getSum(userId, date);
+    }
 }
