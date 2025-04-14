@@ -1,5 +1,6 @@
 package com.alxsshv.service.implementation;
 
+import com.alxsshv.dto.DayReport;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.dto.mappers.FoodIntakeMapper;
 import com.alxsshv.model.FoodIntake;
@@ -78,5 +79,9 @@ public class FoodIntakeServiceImpl implements FoodIntakeService {
 
     public double getFoodInCalorieSum(long userId, LocalDate date) {
         return foodIntakeRepository.getSum(userId, date);
+    }
+
+    public List<DayReport> getHistory(long userId) {
+        return foodIntakeRepository.getHistory(userId);
     }
 }

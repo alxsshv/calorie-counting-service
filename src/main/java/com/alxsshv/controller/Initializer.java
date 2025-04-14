@@ -117,7 +117,7 @@ public class Initializer {
         FoodIntake foodIntake4 = new FoodIntake();
         foodIntake4.addServingSize(food7);
         foodIntake4.addServingSize(food8);
-        foodIntake4.setDate(LocalDate.now());
+        foodIntake4.setDate(LocalDate.now().minusDays(1));
         foodIntake4.setUser(user1);
         foodIntakeRepository.save(foodIntake4);
     }

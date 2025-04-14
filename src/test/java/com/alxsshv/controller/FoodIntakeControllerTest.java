@@ -1,5 +1,6 @@
 package com.alxsshv.controller;
 
+import com.alxsshv.dto.DayReport;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.dto.ServingSizeDto;
 import com.alxsshv.dto.mappers.DishMapper;
@@ -22,6 +23,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -343,5 +345,23 @@ public class FoodIntakeControllerTest {
         template.delete("http://localhost:" + port + "/api/v1/food/" + foodIntakeId);
         long countAfterDeleting = foodIntakeRepository.count();
         Assertions.assertEquals(countBeforeDeleting, countAfterDeleting);
+    }
+
+    @Test
+    public void testCount() {
+        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
+        ResponseEntity<Long> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/report/sum?user=" + userId + "&date=" + LocalDate.now(), Long.class);
+        System.out.println(response.getBody());
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    public void testHistory() {
+        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
+        ResponseEntity<DayReport[]> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/report/history?user=" + userId, DayReport[].class);
+        Arrays.stream(response.getBody()).peek(System.out::println).toList();
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 }
