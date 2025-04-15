@@ -1,6 +1,6 @@
 package com.alxsshv.service.implementation;
 
-import com.alxsshv.dto.DayReport;
+import com.alxsshv.model.DayReport;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.dto.mappers.FoodIntakeMapper;
 import com.alxsshv.model.FoodIntake;
@@ -71,17 +71,5 @@ public class FoodIntakeServiceImpl implements FoodIntakeService {
             message = "Некорректный идентификатор приёма пищи") long FoodIntakeId) {
         FoodIntake foodIntake = getById(FoodIntakeId);
         foodIntakeRepository.delete(foodIntake);
-    }
-
-    public int getFoodInCount(long userId, LocalDate date) {
-        return foodIntakeRepository.getCount(userId, date);
-    }
-
-    public double getFoodInCalorieSum(long userId, LocalDate date) {
-        return foodIntakeRepository.getSum(userId, date);
-    }
-
-    public List<DayReport> getHistory(long userId) {
-        return foodIntakeRepository.getHistory(userId);
     }
 }

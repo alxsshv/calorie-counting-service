@@ -1,6 +1,6 @@
 package com.alxsshv.controller;
 
-import com.alxsshv.dto.DayReport;
+import com.alxsshv.model.DayReport;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.dto.ServingSizeDto;
 import com.alxsshv.dto.mappers.DishMapper;
@@ -356,12 +356,5 @@ public class FoodIntakeControllerTest {
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 
-    @Test
-    public void testHistory() {
-        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
-        ResponseEntity<DayReport[]> response = template
-                .getForEntity("http://localhost:" + port + "/api/v1/report/history?user=" + userId, DayReport[].class);
-        Arrays.stream(response.getBody()).peek(System.out::println).toList();
-        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
-    }
+
 }

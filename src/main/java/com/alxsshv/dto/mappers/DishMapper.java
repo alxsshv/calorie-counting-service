@@ -29,9 +29,7 @@ public interface DishMapper {
     List<DishDto> toDishDtoList(List<Dish> dishList);
 
     /**Метод преобразования в сущности {@link Dish} в UserDto.
-     * @param dish - Объект класса Dish (блюдо).
-     * @return возвращает объект передачи данных
-     * для класса Dish ({@link DishDto}) */
+     * @param dish - Объект класса Dish (блюдо). */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateDishFromDishDto(@MappingTarget Dish dish, DishDto dishDto);
 

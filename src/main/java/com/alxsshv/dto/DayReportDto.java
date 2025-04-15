@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class DayReport {
+public class DayReportDto {
     private LocalDate date;
     private long foodIntakesCount;
     private double dayCalorieSum;
