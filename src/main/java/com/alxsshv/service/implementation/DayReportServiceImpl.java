@@ -41,6 +41,6 @@ public class DayReportServiceImpl implements DayReportService {
     public boolean isGoalAchieved(
             @Min(value = 1, message = "Некорректный идентификатор пользователя") final long userId,
             @IsValidDate final LocalDate date) {
-        return false;
+        return dayReportRepository.isGoalAchieved(userId, date);
     }
 }

@@ -31,7 +31,7 @@ public class Initializer {
         user1.setHeight(185);
         user1.setSex(Sex.MAN);
         user1.setGoal(Goal.KEEPING_FIT);
-        user1.setCalorieNorm(1540);
+        user1.setCalorieNorm(50);
         userRepository.save(user1);
 
         User user2 = new User();
