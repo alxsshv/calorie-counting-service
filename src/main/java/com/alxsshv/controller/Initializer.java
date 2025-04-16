@@ -19,7 +19,7 @@ public class Initializer {
     @Autowired
     private FoodIntakeRepository foodIntakeRepository;
 
-
+    @PostConstruct
     public void init() {
         System.out.println("Заполнение БД...");
 
@@ -47,7 +47,7 @@ public class Initializer {
 
         Dish dish1 = new Dish();
         dish1.setTitle("Блин");
-        dish1.setCalorieContent(100);
+        dish1.setCalorieContent(200);
         dish1.setProteinsAmount(1);
         dish1.setFatsAmount(1);
         dish1.setCarbohydratesAmount(1);
@@ -55,7 +55,7 @@ public class Initializer {
 
         Dish dish2 = new Dish();
         dish2.setTitle("Суп");
-        dish2.setCalorieContent(200);
+        dish2.setCalorieContent(100);
         dish2.setProteinsAmount(2);
         dish2.setFatsAmount(2);
         dish2.setCarbohydratesAmount(2);
@@ -63,7 +63,7 @@ public class Initializer {
 
         Dish dish3 = new Dish();
         dish3.setTitle("Каша гречневая");
-        dish3.setCalorieContent(300);
+        dish3.setCalorieContent(100);
         dish3.setProteinsAmount(3);
         dish3.setFatsAmount(3);
         dish3.setCarbohydratesAmount(3);
@@ -75,6 +75,7 @@ public class Initializer {
         ServingSize food2 = new ServingSize();
         food2.setDish(dish2);
         food2.setAmount(200);
+
         FoodIntake foodIntake1 = new FoodIntake();
         foodIntake1.addServingSize(food1);
         foodIntake1.addServingSize(food2);
@@ -84,14 +85,14 @@ public class Initializer {
 
         ServingSize food3 = new ServingSize();
         food3.setDish(dish2);
-        food3.setAmount(200);
+        food3.setAmount(300);
         ServingSize food4 = new ServingSize();
         food4.setDish(dish3);
         food4.setAmount(400);
         FoodIntake foodIntake2 = new FoodIntake();
         foodIntake2.addServingSize(food3);
         foodIntake2.addServingSize(food4);
-        foodIntake2.setDate(LocalDate.now());
+        foodIntake2.setDate(LocalDate.now().minusDays(2));
         foodIntake2.setUser(user1);
         foodIntakeRepository.save(foodIntake2);
 
@@ -120,5 +121,15 @@ public class Initializer {
         foodIntake4.setDate(LocalDate.now().minusDays(1));
         foodIntake4.setUser(user1);
         foodIntakeRepository.save(foodIntake4);
+
+
+        ServingSize food9 = new ServingSize();
+        food9.setDish(dish1);
+        food9.setAmount(8);
+        FoodIntake foodIntake5 = new FoodIntake();
+        foodIntake5.addServingSize(food9);
+        foodIntake5.setDate(LocalDate.now().minusDays(1));
+        foodIntake5.setUser(user1);
+        foodIntakeRepository.save(foodIntake5);
     }
 }

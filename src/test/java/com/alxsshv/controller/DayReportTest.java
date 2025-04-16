@@ -80,7 +80,7 @@ public class DayReportTest {
 
         Dish dish1 = new Dish();
         dish1.setTitle("Блин");
-        dish1.setCalorieContent(200);
+        dish1.setCalorieContent(500);
         dish1.setProteinsAmount(1);
         dish1.setFatsAmount(1);
         dish1.setCarbohydratesAmount(1);
@@ -88,15 +88,15 @@ public class DayReportTest {
 
         Dish dish2 = new Dish();
         dish2.setTitle("Суп");
-        dish2.setCalorieContent(200);
+        dish2.setCalorieContent(300);
         dish2.setProteinsAmount(2);
         dish2.setFatsAmount(2);
         dish2.setCarbohydratesAmount(2);
         dishRepository.save(dish2);
 
         ServingSize food1 = new ServingSize();
-        food1.setDish(dish1);
-        food1.setAmount(100);
+        food1.setDish(dish2);
+        food1.setAmount(600);
 
         FoodIntake foodIntake1 = new FoodIntake();
         foodIntake1.addServingSize(food1);
@@ -105,8 +105,9 @@ public class DayReportTest {
         foodIntakeRepository.save(foodIntake1);
 
         ServingSize food2 = new ServingSize();
-        food1.setDish(dish2);
-        food1.setAmount(600);
+        food2.setDish(dish2);
+        food2.setAmount(400);
+
         FoodIntake foodIntake2 = new FoodIntake();
         foodIntake2.addServingSize(food2);
         foodIntake2.setDate(LocalDate.now());
@@ -114,13 +115,23 @@ public class DayReportTest {
         foodIntakeRepository.save(foodIntake2);
 
         ServingSize food3 = new ServingSize();
-        food1.setDish(dish1);
-        food1.setAmount(300);
+        food3.setDish(dish1);
+        food3.setAmount(400);
+
         FoodIntake foodIntake3 = new FoodIntake();
         foodIntake3.addServingSize(food3);
         foodIntake3.setDate(LocalDate.now().minusDays(1));
         foodIntake3.setUser(user1);
         foodIntakeRepository.save(foodIntake3);
+
+        ServingSize food4 = new ServingSize();
+        food4.setDish(dish2);
+        food4.setAmount(400);
+        FoodIntake foodIntake4 = new FoodIntake();
+        foodIntake4.addServingSize(food4);
+        foodIntake4.setDate(LocalDate.now().minusDays(2));
+        foodIntake4.setUser(user2);
+        foodIntakeRepository.save(foodIntake4);
     }
 
     @AfterEach
@@ -133,12 +144,16 @@ public class DayReportTest {
 
     @Test
     public void testHistory() {
+        int expectedHistoryLength = 2;
         long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
         ResponseEntity<DayReportDto[]> response = template
                 .getForEntity("http://localhost:" + port + "/api/v1/report/history?user=" + userId, DayReportDto[].class);
-        System.out.println(response.getBody());
         System.out.println(response.getBody().length);
         Arrays.stream(response.getBody()).peek(System.out::println).toList();
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(expectedHistoryLength, response.getBody().length);
+
+
     }
 }

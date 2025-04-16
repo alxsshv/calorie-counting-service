@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
 
-public class FoodIntakeDateValidator implements ConstraintValidator<IsValidFoodIntakeDate, LocalDate> {
+public class DateValidator implements ConstraintValidator<IsValidDate, LocalDate> {
 
     @Override
     public boolean isValid(LocalDate date, ConstraintValidatorContext constraintValidatorContext) {

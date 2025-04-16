@@ -1,12 +1,11 @@
 package com.alxsshv.service.implementation;
 
-import com.alxsshv.model.DayReport;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.dto.mappers.FoodIntakeMapper;
 import com.alxsshv.model.FoodIntake;
 import com.alxsshv.repository.FoodIntakeRepository;
 import com.alxsshv.service.FoodIntakeService;
-import com.alxsshv.service.validation.IsValidFoodIntakeDate;
+import com.alxsshv.service.validation.IsValidDate;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -41,7 +40,7 @@ public class FoodIntakeServiceImpl implements FoodIntakeService {
     @Override
     public List<FoodIntakeDto> findAllByUserIdAndDate(
             @Min(value = 1, message = "Некорректный идентификатор пользователя") final long userId,
-            @IsValidFoodIntakeDate final LocalDate date) {
+            @IsValidDate final LocalDate date) {
         List<FoodIntake> foodIntakeList = foodIntakeRepository
                 .findByUserIdAndDate(userId, date);
         return foodIntakeMapper.toFoodIntakeDtoList(foodIntakeList);

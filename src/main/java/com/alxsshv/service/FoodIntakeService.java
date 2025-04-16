@@ -2,7 +2,7 @@ package com.alxsshv.service;
 
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.model.FoodIntake;
-import com.alxsshv.service.validation.IsValidFoodIntakeDate;
+import com.alxsshv.service.validation.IsValidDate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
@@ -15,7 +15,7 @@ public interface FoodIntakeService {
 
     List<FoodIntakeDto> findAllByUserIdAndDate(
             @Min(value = 1, message = "Некорректный идентификатор пользователя") long userId,
-            @IsValidFoodIntakeDate LocalDate date);
+            @IsValidDate LocalDate date);
 
     FoodIntake getById(@Min(value = 1, message = "Некорректный идентификатор приёма пищи") long FoodIntakeId);
 

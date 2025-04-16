@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = FoodIntakeDateValidator.class)
-public @interface IsValidFoodIntakeDate {
-    String message() default "Дата приёма пищи не указана или указана не верно";
+@Constraint(validatedBy = DateValidator.class)
+public @interface IsValidDate {
+    String message() default "Дата не указана или указана не верно";
 
     Class<?>[] groups() default { };
 
