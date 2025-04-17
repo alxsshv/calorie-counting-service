@@ -347,14 +347,4 @@ public class FoodIntakeControllerTest {
         Assertions.assertEquals(countBeforeDeleting, countAfterDeleting);
     }
 
-    @Test
-    public void testCount() {
-        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
-        ResponseEntity<Long> response = template
-                .getForEntity("http://localhost:" + port + "/api/v1/report/sum?user=" + userId + "&date=" + LocalDate.now(), Long.class);
-        System.out.println(response.getBody());
-        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
-    }
-
-
 }

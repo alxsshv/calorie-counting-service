@@ -418,12 +418,12 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test findUserById when send not valid id then get status 400 (bad request)")
-    public void testFindUserById_whenSendNotValidId_thenGet400() {
+    @DisplayName("Test findUserById when send not valid id then get status 404 (not found)")
+    public void testFindUserById_whenSendNotValidId_thenGet404() {
         long userId = 0;
         ResponseEntity<String> response = template
                 .getForEntity("http://localhost:" + port + "/api/v1/users/" + userId, String.class);
-        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.NOT_FOUND));
     }
 
     @Test

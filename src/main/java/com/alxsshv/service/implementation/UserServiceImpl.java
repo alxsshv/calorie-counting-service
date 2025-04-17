@@ -41,11 +41,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(@Min(value = 1,
-            message = "Неверный формат id") final long id) {
+    public User getById(final long id) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty()) {
-            String errorMessage = "Пользователь с указанным id не найден";
+            String errorMessage = "Пользователь не найден";
             log.error(errorMessage);
             throw new EntityNotFoundException(errorMessage);
         }
@@ -53,8 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findById(@Min(value = 1,
-            message = "Неверный формат id") final long id) {
+    public UserDto findById(final long id) {
         User user = getById(id);
         return userMapper.toUserDto(user);
     }
@@ -83,8 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(@Min(value = 1,
-            message = "Неверный формат id") final long id) {
+    public void deleteById(final long id) {
        User userFromDb = getById(id);
        userRepository.delete(userFromDb);
     }

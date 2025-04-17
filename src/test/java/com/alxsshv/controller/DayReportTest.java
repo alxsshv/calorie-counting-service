@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -143,17 +144,39 @@ public class DayReportTest {
     }
 
     @Test
-    public void testHistory() {
+    @DisplayName("Test getNutritionHistory when send valid userId " +
+            " then get status success and actual dayReportList")
+    public void testGetNutritionHistory_whenSendValidUser_thenGet200() {
         int expectedHistoryLength = 2;
         long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
         ResponseEntity<DayReportDto[]> response = template
-                .getForEntity("http://localhost:" + port + "/api/v1/report/history?user=" + userId, DayReportDto[].class);
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/history?user=" + userId, DayReportDto[].class);
         System.out.println(response.getBody().length);
         Arrays.stream(response.getBody()).peek(System.out::println).toList();
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals(expectedHistoryLength, response.getBody().length);
+    }
 
+    @Test
+    @DisplayName("Test getNutritionHistory when send incorrect userId then get status bad request (400)")
+    public void testNutritionHistory_whenSendIncorrectUserId_thenGetStatus404() {
+        long userId = userRepository.count() + 999L;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/history?user=" + userId, String.class);
+        System.out.println(response.getBody());
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
 
+    @Test
+    @DisplayName("Test getDayReport when send valid userId and date then get status 200 and get dayReport")
+    public void testGetDayReport_whenSendValidUserIdAndDate_ThenGetStatus200() {
+        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
+        ResponseEntity<DayReportDto> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), DayReportDto.class);
+        System.out.println(response.getBody());
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
     }
 }

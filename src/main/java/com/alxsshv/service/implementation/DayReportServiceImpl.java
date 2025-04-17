@@ -6,6 +6,7 @@ import com.alxsshv.model.DayReport;
 import com.alxsshv.repository.DayReportRepository;
 import com.alxsshv.service.DayReportService;
 import com.alxsshv.service.validation.IsValidDate;
+import com.alxsshv.service.validation.UserIsPresent;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class DayReportServiceImpl implements DayReportService {
 
     @Override
     public DayReportDto getDayReport(
-            @Min(value = 1, message = "Некорректный идентификатор пользователя") final long userId,
+            @UserIsPresent  final long userId,
             @IsValidDate final LocalDate date) {
         DayReport dayReport = dayReportRepository.getDayReport(userId, date);
         return dayReportMapper.toDto(dayReport);
@@ -32,14 +33,14 @@ public class DayReportServiceImpl implements DayReportService {
 
     @Override
     public List<DayReportDto> getHistory(
-            @Min(value = 1, message = "Некорректный идентификатор пользователя") final long userId) {
+             @UserIsPresent final long userId) {
         List<DayReport> dayReports = dayReportRepository.getDayReportList(userId);
         return dayReportMapper.toDtoList(dayReports);
     }
 
     @Override
     public boolean isGoalAchieved(
-            @Min(value = 1, message = "Некорректный идентификатор пользователя") final long userId,
+            @UserIsPresent final long userId,
             @IsValidDate final LocalDate date) {
         return dayReportRepository.isGoalAchieved(userId, date);
     }

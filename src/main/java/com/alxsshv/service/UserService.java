@@ -34,8 +34,7 @@ public interface UserService {
      * @exception jakarta.persistence.EntityNotFoundException
      * должно выбрасываться если запись о пользователе с указанным
      * идентификатором (id) не найдена*/
-    UserDto findById(@Min(value = 1,
-            message = "Неверный формат id") long id);
+    UserDto findById(long id);
 
     /**Метод для получения всех записей о пользователях.
      * @return возвращает список DTO для класса {@link User},
@@ -49,6 +48,5 @@ public interface UserService {
     /**Метод удаления записи о пользователе по id.
      * @param id - идентификатор пользователя в формате long
      * (положительное значение больше нуля).*/
-    void deleteById(@Min(value = 1,
-            message = "Неверный формат id") long id);
+    void deleteById(long id);
 }

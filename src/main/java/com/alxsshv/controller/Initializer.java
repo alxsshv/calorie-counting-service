@@ -19,7 +19,7 @@ public class Initializer {
     @Autowired
     private FoodIntakeRepository foodIntakeRepository;
 
-    @PostConstruct
+   // @PostConstruct
     public void init() {
         System.out.println("Заполнение БД...");
 
