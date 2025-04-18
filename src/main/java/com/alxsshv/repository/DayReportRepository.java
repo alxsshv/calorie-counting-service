@@ -9,24 +9,31 @@ import java.util.List;
 
 public interface DayReportRepository extends JpaRepository<DayReport, LocalDate> {
     @Query(
-            value = "select date as \"date\", " +
-                    "SUM(amount * calorie_content / 100) as \"day_calorie_sum\", " +
-                    "COUNT(ss.id ) as \"food_intakes_count\"" +
+            value = "select fi.\"date\" as \"date\"," +
+                    "count(ss.id) as \"food_intakes_number\"," +
+                    "SUM(amount * d.proteins_amount / 100) as \"proteins_sum\"," +
+                    "SUM(amount * d.fats_amount / 100) as \"fats_sum\"," +
+                    "SUM(amount * d.carbohydrates_amount / 100) as \"carbohydrates_sum\"," +
+                    "SUM(amount * d.calorie_content / 100) as \"day_calorie_sum\"" +
                     "from serving_sizes ss " +
                     "join dishes d on (d.id = ss.dish_id)" +
                     "join food_intakes fi on (fi.id = ss.food_intake_id) " +
-                    "where user_id = ?1 group by date;",
+                    "where (user_id = ?1) group by \"date\" ",
             nativeQuery = true
     )
     List<DayReport> getDayReportList(long userId);
 
     @Query(
-            value = "select date as \"date\", SUM(amount * calorie_content / 100) " +
-                    "as \"day_calorie_sum\", COUNT(ss.id ) as \"food_intakes_count\" " +
+            value = "select fi.\"date\" as \"date\"," +
+                    "count(ss.id) as \"food_intakes_number\"," +
+                    "SUM(amount * d.proteins_amount / 100) as \"proteins_sum\"," +
+                    "SUM(amount * d.fats_amount / 100) as \"fats_sum\"," +
+                    "SUM(amount * d.carbohydrates_amount / 100) as \"carbohydrates_sum\"," +
+                    "SUM(amount * d.calorie_content / 100) as \"day_calorie_sum\"" +
                     "from serving_sizes ss " +
                     "join dishes d on (d.id = ss.dish_id)" +
-                    "join food_intakes fi on (fi.id = ss.food_intake_id)" +
-                    "where (user_id = ?1 and date = ?2) group by date;",
+                    "join food_intakes fi on (fi.id = ss.food_intake_id) " +
+                    "where (user_id = ?1 and date = ?2) group by \"date\";",
             nativeQuery = true
     )
     DayReport getDayReport(long userId, LocalDate date);

@@ -6,6 +6,7 @@ import com.alxsshv.model.FoodIntake;
 import com.alxsshv.repository.FoodIntakeRepository;
 import com.alxsshv.service.FoodIntakeService;
 import com.alxsshv.service.validation.IsValidDate;
+import com.alxsshv.service.validation.UserIsPresent;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -39,7 +40,7 @@ public class FoodIntakeServiceImpl implements FoodIntakeService {
 
     @Override
     public List<FoodIntakeDto> findAllByUserIdAndDate(
-            @Min(value = 1, message = "Некорректный идентификатор пользователя") final long userId,
+            @UserIsPresent final long userId,
             @IsValidDate final LocalDate date) {
         List<FoodIntake> foodIntakeList = foodIntakeRepository
                 .findByUserIdAndDate(userId, date);

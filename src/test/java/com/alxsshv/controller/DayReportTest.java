@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DayReportTest {
@@ -65,7 +64,7 @@ public class DayReportTest {
         user1.setHeight(178);
         user1.setGoal(Goal.KEEPING_FIT);
         user1.setSex(Sex.MAN);
-        user1.setCalorieNorm(1620);
+        user1.setCalorieNorm(5020);
         userRepository.save(user1);
 
         User user2 = new User();
@@ -76,23 +75,23 @@ public class DayReportTest {
         user2.setHeight(178);
         user2.setGoal(Goal.KEEPING_FIT);
         user2.setSex(Sex.WOMAN);
-        user2.setCalorieNorm(1310);
+        user2.setCalorieNorm(10);
         userRepository.save(user2);
 
         Dish dish1 = new Dish();
         dish1.setTitle("Блин");
-        dish1.setCalorieContent(500);
-        dish1.setProteinsAmount(1);
-        dish1.setFatsAmount(1);
-        dish1.setCarbohydratesAmount(1);
+        dish1.setCalorieContent(200);
+        dish1.setProteinsAmount(10);
+        dish1.setFatsAmount(20);
+        dish1.setCarbohydratesAmount(40);
         dishRepository.save(dish1);
 
         Dish dish2 = new Dish();
         dish2.setTitle("Суп");
-        dish2.setCalorieContent(300);
-        dish2.setProteinsAmount(2);
-        dish2.setFatsAmount(2);
-        dish2.setCarbohydratesAmount(2);
+        dish2.setCalorieContent(400);
+        dish2.setProteinsAmount(20);
+        dish2.setFatsAmount(40);
+        dish2.setCarbohydratesAmount(80);
         dishRepository.save(dish2);
 
         ServingSize food1 = new ServingSize();
@@ -133,6 +132,15 @@ public class DayReportTest {
         foodIntake4.setDate(LocalDate.now().minusDays(2));
         foodIntake4.setUser(user2);
         foodIntakeRepository.save(foodIntake4);
+
+        ServingSize food5 = new ServingSize();
+        food5.setDish(dish2);
+        food5.setAmount(400);
+        FoodIntake foodIntake5 = new FoodIntake();
+        foodIntake5.addServingSize(food5);
+        foodIntake5.setDate(LocalDate.now());
+        foodIntake5.setUser(user2);
+        foodIntakeRepository.save(foodIntake5);
     }
 
     @AfterEach
@@ -150,9 +158,8 @@ public class DayReportTest {
         int expectedHistoryLength = 2;
         long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
         ResponseEntity<DayReportDto[]> response = template
-                .getForEntity("http://localhost:" + port + "/api/v1/reports/history?user=" + userId, DayReportDto[].class);
-        System.out.println(response.getBody().length);
-        Arrays.stream(response.getBody()).peek(System.out::println).toList();
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/history?user=" + userId,
+                        DayReportDto[].class);
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals(expectedHistoryLength, response.getBody().length);
@@ -163,20 +170,163 @@ public class DayReportTest {
     public void testNutritionHistory_whenSendIncorrectUserId_thenGetStatus404() {
         long userId = userRepository.count() + 999L;
         ResponseEntity<String> response = template
-                .getForEntity("http://localhost:" + port + "/api/v1/reports/history?user=" + userId, String.class);
-        System.out.println(response.getBody());
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/history?user=" + userId,
+                        String.class);
         Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
     }
 
     @Test
     @DisplayName("Test getDayReport when send valid userId and date then get status 200 and get dayReport")
     public void testGetDayReport_whenSendValidUserIdAndDate_ThenGetStatus200() {
+        double expectedCalorieSum = 4000;
+        double expectedProteinsSum = 200;
+        double expectedFatsSum = 400;
+        double expectedCarbohydratesSum = 800;
+        int expectedFoodIntakesNumber = 2;
         long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
         ResponseEntity<DayReportDto> response = template
                 .getForEntity("http://localhost:" + port + "/api/v1/reports" +
                         "?user=" + userId + "&date=" + LocalDate.now(), DayReportDto.class);
-        System.out.println(response.getBody());
         Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
         Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(expectedCalorieSum, response.getBody().getDayCalorieSum());
+        Assertions.assertEquals(expectedProteinsSum, response.getBody().getProteinsSum());
+        Assertions.assertEquals(expectedFatsSum, response.getBody().getFatsSum());
+        Assertions.assertEquals(expectedCarbohydratesSum, response.getBody().getCarbohydratesSum());
+        Assertions.assertEquals(expectedFoodIntakesNumber, response.getBody().getFoodIntakesNumber());
+    }
+
+    @Test
+    @DisplayName("Test getDayReport when send valid userId and yesterday date " +
+            "then get status 200 and get dayReport")
+    public void testGetDayReport_whenSendValidUserIdAndYesterdayDate_ThenGetStatus200() {
+        double expectedCalorieSum = 800;
+        double expectedProteinsSum = 40;
+        double expectedFatsSum = 80;
+        double expectedCarbohydratesSum = 160;
+        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
+        ResponseEntity<DayReportDto> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports" +
+                        "?user=" + userId + "&date=" + LocalDate.now().minusDays(1), DayReportDto.class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(expectedCalorieSum, response.getBody().getDayCalorieSum());
+        Assertions.assertEquals(expectedProteinsSum, response.getBody().getProteinsSum());
+        Assertions.assertEquals(expectedFatsSum, response.getBody().getFatsSum());
+        Assertions.assertEquals(expectedCarbohydratesSum, response.getBody().getCarbohydratesSum());
+    }
+
+    @Test
+    @DisplayName("Test getDayReport when send incorrect userId and valid date" +
+            " then get status 400 (bad request)")
+        public void testGetDayReport_whenSendIncorrectUserIdAndValidDate_thenGet400() {
+        long userId = -1L;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test getDayReport when user not found" +
+            " then get status 400 (bad request)")
+    public void testGetDayReport_whenUserNotFound_thenGet400() {
+        long userId = userRepository.count() + 999L;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test getDayReport when send request without userId" +
+            " then get status 400 (bad request)")
+    public void testGetDayReport_whenSendRequestWithoutUserId_thenGet400() {
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports" +
+                        "?date=" + LocalDate.now(), String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test getDayReport when send request without date" +
+            " then get status 400 (bad request)")
+    public void testGetDayReport_whenSendRequestWithoutDate_thenGet400() {
+        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports" +
+                        "?date=" + userId, String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test isGoalAchieved when send valid userId and date " +
+            "user days calorie sum less than user calorie norm " +
+            "then get status success (200) and return true")
+    public void testIsGoalAchieved_whenSendValidUserIdAndDate_ThenGet200AndTrue() {
+        long userId = userRepository.findByEmail("jhon@world.com").orElseThrow().getId();
+        ResponseEntity<Boolean> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/results" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), Boolean.class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertTrue(response.getBody());
+    }
+
+    @Test
+    @DisplayName("Test isGoalAchieved when send valid userId and date and " +
+            "user days calorie sum more than user calorie norm " +
+            "then get status success (200) and return false")
+    public void testIsGoalAchieved_whenSendValidUserIdAndDate_ThenGet200andFalse() {
+        long userId = userRepository.findByEmail("jane@world.com").orElseThrow().getId();
+        ResponseEntity<Boolean> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/results" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), Boolean.class);
+        Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertFalse(response.getBody());
+    }
+
+    @Test
+    @DisplayName("Test isGoalAchieved when send incorrect userId and valid date" +
+            " then get status 400 (bad request)")
+    public void testIsGoalAchieved_whenSendIncorrectUserIdAndValidDate_thenGet400() {
+        long userId = -222L;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/results" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test isGoalAchieved when user not found" +
+            " then get status 400 (bad request)")
+    public void testIsGoalAchieved_whenUserNotFound_thenGet400() {
+        long userId = userRepository.count() + 999L;
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/results" +
+                        "?user=" + userId + "&date=" + LocalDate.now(), String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test isGoalAchieved when send request without userid" +
+            " then get status 400 (bad request)")
+    public void testIsGoalAchieved_whenSendRequestWithoutUserid_thenGet400() {
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/results" +
+                        "?date=" + LocalDate.now(), String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+    }
+
+    @Test
+    @DisplayName("Test isGoalAchieved when send request without date" +
+            " then get status 400 (bad request)")
+    public void testIsGoalAchieved_whenSendRequestWithoutDate_thenGet400() {
+        long userId = userRepository.findByEmail("jane@world.com").orElseThrow().getId();
+        ResponseEntity<String> response = template
+                .getForEntity("http://localhost:" + port + "/api/v1/reports/results" +
+                        "?user=" + userId, String.class);
+        Assertions.assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
     }
 }
