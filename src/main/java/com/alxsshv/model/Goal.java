@@ -24,16 +24,17 @@ public enum Goal {
      * @return возвращает цель, соответствующую указанному псевдониму.
      * @exception IllegalArgumentException выбрасывается если не найдена цель,
      * соответствующая указанному псевдониму*/
-    public static Goal valueOfPseudonym(String pseudonym) {
+    public static Goal valueOfPseudonym(final String pseudonym) {
         for (Goal goal : Goal.values()) {
             if (goal.getPseudonym().equalsIgnoreCase(pseudonym)) {
                 return goal;
             }
         }
-        throw new DataProcessingException("Указанная цель не доступна." +
-                " Доступные цели: Похудение, Поддержание, Набор массы");
+        throw new DataProcessingException("Указанная цель не доступна."
+                + " Доступные цели: Похудение, Поддержание, Набор массы");
     }
 
-    /**Русcкоязычный псевдоним константы.*/
+    /**Русскоязычный псевдоним константы
+     *  из перечисления.*/
     private final String pseudonym;
 }

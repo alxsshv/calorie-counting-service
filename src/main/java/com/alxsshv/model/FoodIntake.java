@@ -52,6 +52,11 @@ public class FoodIntake {
          servingSize.setFoodIntake(this);
      }
 
+    /**Метод для преобразования объекта класса
+     *  FoodIntake в строковое представление.
+     *  @return возвращает строку с
+     *  полями и их значениями для
+     *  экземпляра класса FoodIntake.*/
     @Override
     public String toString() {
         return "FoodIntake{" +

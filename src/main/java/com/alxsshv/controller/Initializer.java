@@ -1,10 +1,11 @@
 package com.alxsshv.controller;
 
+import com.alxsshv.model.Goal;
+import com.alxsshv.model.Sex;
 import com.alxsshv.model.*;
 import com.alxsshv.repository.DishRepository;
 import com.alxsshv.repository.FoodIntakeRepository;
 import com.alxsshv.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 

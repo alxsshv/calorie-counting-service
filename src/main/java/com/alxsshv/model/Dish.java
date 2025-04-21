@@ -76,13 +76,13 @@ public class Dish {
      * содержащее наименование его полей и их значения*/
     @Override
     public String toString() {
-        return "Dish{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", calorieContent=" + calorieContent +
-                ", proteinsAmount=" + proteinsAmount +
-                ", fatsAmount=" + fatsAmount +
-                ", carbohydratesAmount=" + carbohydratesAmount +
-                '}';
+        return "Dish{"
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", calorieContent=" + calorieContent
+                + ", proteinsAmount=" + proteinsAmount
+                + ", fatsAmount=" + fatsAmount
+                + ", carbohydratesAmount=" + carbohydratesAmount
+                + '}';
     }
 }

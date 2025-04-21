@@ -13,10 +13,11 @@ public interface DishMapper {
      * @param dishDto - объект передачи данных
      * для класса Dish ({@link DishDto}).
      * @return возвращает объект класса {@link Dish}.*/
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Dish toEntity(DishDto dishDto);
 
-    /**Метод преобразования в сущности {@link Dish} в UserDto.
+    /**Метод преобразования в сущности {@link Dish} в DishDto.
      * @param dish - Объект класса Dish (блюдо).
      * @return возвращает объект передачи данных
      * для класса Dish ({@link DishDto})*/
@@ -29,8 +30,13 @@ public interface DishMapper {
     List<DishDto> toDishDtoList(List<Dish> dishList);
 
     /**Метод преобразования в сущности {@link Dish} в UserDto.
-     * @param dish - Объект класса Dish (блюдо). */
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+     * @param dish - Объект класса Dish (блюдо),
+     * данные которого обновляются значениями параметра dishDto.
+     * @param dishDto  - Объект передачи данных, значения
+     * свойств которого используются для обновления значений полей
+     * объекта dish.*/
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateDishFromDishDto(@MappingTarget Dish dish, DishDto dishDto);
 
 

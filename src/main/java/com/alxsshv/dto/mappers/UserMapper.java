@@ -7,7 +7,6 @@ import com.alxsshv.model.User;
 import org.mapstruct.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING)
@@ -46,7 +45,7 @@ public interface UserMapper {
     }
 
     /**Дефолтный метод для преобразования указанного строкового
-     * псеводнима пола, пол выбирается из перечисления {@link com.alxsshv.model.Sex}*/
+     * псеводнима пола, пол выбирается из перечисления {@link Sex}*/
     @Named("setUserSex")
     default Sex setUserSex(String sex) {
         try {

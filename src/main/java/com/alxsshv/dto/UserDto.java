@@ -1,6 +1,8 @@
 package com.alxsshv.dto;
 
 import com.alxsshv.model.Goal;
+import com.alxsshv.model.Sex;
+import com.alxsshv.service.validation.UserViolationsConstants;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,60 +19,75 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+
     /**Идентификатор пользователя.*/
     private long id;
+
     /**Имя пользователя.*/
     @NotNull(message = "Имя пользователя не может быть пустым")
-    @Size(min = 3, max = 80,
+    @Size(min = UserViolationsConstants.MIN_USER_NAME_LENGTH,
+            max = UserViolationsConstants.MAX_USER_NAME_LENGTH,
             message = "Неверный формат имени пользователя")
     private String name;
+
     /**Адрес электронной почты.*/
     @NotNull(message = "Адрес электронной почты не может быть пустым")
-    @Pattern(regexp = "[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\\.[a-zA-Z]{2,}",
+    @Pattern(regexp = UserViolationsConstants.EMAIL_VALIDATION_TEMPLATE,
             message = "Неверный формат адреса электронной почты")
     private String email;
+
     /**Возраст пользователя.*/
-    @Min(value = 1, message = "Некорректно указан возраст пользователя")
-    @Max(value = 120, message = "Некорректно указан возраст пользователя")
+    @Min(value = UserViolationsConstants.MIN_USER_AGE,
+            message = "Некорректно указан возраст пользователя")
+    @Max(value = UserViolationsConstants.MAX_USER_AGE,
+            message = "Некорректно указан возраст пользователя")
     private int age;
+
     /**Вес пользователя в килограммах.*/
-    @Min(value = 1, message = "Некорректно указан вес пользователя. " +
-            "Вес должен быть указан в килограммах")
-    @Max(value = 200, message = "Некорректно указан вес пользователя. " +
-            "Вес должен быть указан в килограммах")
+    @Min(value = UserViolationsConstants.MIN_USER_WEIGHT,
+            message = "Некорректно указан вес пользователя. "
+                    + "Вес должен быть указан в килограммах")
+    @Max(value = UserViolationsConstants.MAX_USER_WEIGHT,
+            message = "Некорректно указан вес пользователя. "
+                    + "Вес должен быть указан в килограммах")
     private int weight;
+
     /**Рост пользователя в сантиметрах.*/
-    @Min(value = 50, message = "Некорректно указан" +
-            " рост пользователя. Рост должен быть указан в сантиметрах")
-    @Max(value = 280, message = "Некорректно указан" +
-            " рост пользователя. Рост должен быть указан в сантиметрах")
+    @Min(value = UserViolationsConstants.MIN_USER_HEIGHT,
+            message = "Некорректно указан"
+            + " рост пользователя. Рост должен быть указан в сантиметрах")
+    @Max(value = UserViolationsConstants.MAX_USER_HEIGHT,
+            message = "Некорректно указан"
+            + " рост пользователя. Рост должен быть указан в сантиметрах")
     private int height;
+
     /**Псевдоим цели использования сервиса
      * из перечисления {@link Goal}.*/
     @NotNull(message = "Пожалуйста укажите цель подсчета калорий")
-    @NotEmpty(message = "Пожалуйста выбрите цель из возможных вариантов: похудение, поддержание, набор массы")
+    @NotEmpty(message = "Пожалуйста выбрите цель из возможных вариантов:"
+            + " похудение, поддержание, набор массы")
     private String goal;
-    /**Пол пользователя из перечисления {@link com.alxsshv.model.Sex}.*/
+    /**Пол пользователя из перечисления {@link Sex}.*/
     @NotNull(message = "Пожалуйста укажите пол пользователя")
-    @NotEmpty(message = "Пожалуйста укажите пол пользователя: мужчина или женщина")
+    @NotEmpty(message = "Пожалуйста укажите пол пользователя:"
+            + " мужчина или женщина")
     private String sex;
-    /**Дневная норма калорий*/
+    /**Дневная норма калорий в килокалориях.*/
     private double calorieNorm;
-
 
     /**Метод преобразования экземпляра класса UserDto в строку.
      * @return строковое представление экземпляра класса UserDto,
      * содержащее наименование его полей и их значения*/
     @Override
     public String toString() {
-        return "UserDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", weight=" + weight +
-                ", height=" + height +
-                ", goal='" + goal + '\'' +
-                '}';
+        return "UserDto{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", email='" + email + '\''
+                + ", age=" + age
+                + ", weight=" + weight
+                + ", height=" + height
+                + ", goal='" + goal + '\''
+                + '}';
     }
 }

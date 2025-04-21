@@ -51,9 +51,15 @@ public class User {
     @Column(name = "calorie_norm")
     private double calorieNorm;
 
+    /**Метод описывает алгоритм вычисления hash-кода объекта класса User.
+     * Для вычисления хеш-кода используются все свойства объекта класса User.
+     * @return возвращает целочисленное значение хеш-кода экземпляра класса User
+     * в диапазоне от -2147483648 до 2147483647*/
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        };
         User user = (User) o;
         return id == user.id && age == user.age
                 && weight == user.weight && height == user.height
@@ -78,16 +84,16 @@ public class User {
      */
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", weight=" + weight +
-                ", height=" + height +
-                ", goal=" + goal +
-                ", sex=" + sex +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", email='" + email + '\''
+                + ", age=" + age
+                + ", weight=" + weight
+                + ", height=" + height
+                + ", goal=" + goal
+                + ", sex=" + sex
+                + '}';
     }
 
 }

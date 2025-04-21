@@ -42,16 +42,19 @@ public class DayReport {
     private double dayCalorieSum;
 
     /**Метод для преобразования объекта класса
-     *  DayReport в строковое представление.*/
+     *  DayReport в строковое представление.
+     *  @return возвращает строку с перечнем
+     *  полей и их значений для
+     *  экземпляра класса DayReport.*/
     @Override
     public String toString() {
-        return "DayReport{" +
-                "date=" + date +
-                ", foodIntakesNumber=" + foodIntakesNumber +
-                ", proteinsSum=" + proteinsSum +
-                ", fatsSum=" + fatsSum +
-                ", carbohydratesSum=" + carbohydratesSum +
-                ", dayCalorieSum=" + dayCalorieSum +
-                '}';
+        return "DayReport{"
+                + "date=" + date
+                + ", foodIntakesNumber=" + foodIntakesNumber
+                + ", proteinsSum=" + proteinsSum
+                + ", fatsSum=" + fatsSum
+                + ", carbohydratesSum=" + carbohydratesSum
+                + ", dayCalorieSum=" + dayCalorieSum
+                + '}';
     }
 }

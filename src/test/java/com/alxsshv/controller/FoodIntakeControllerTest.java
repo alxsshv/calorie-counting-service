@@ -1,6 +1,7 @@
 package com.alxsshv.controller;
 
-import com.alxsshv.model.DayReport;
+import com.alxsshv.model.Goal;
+import com.alxsshv.model.Sex;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.dto.ServingSizeDto;
 import com.alxsshv.dto.mappers.DishMapper;
@@ -23,7 +24,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

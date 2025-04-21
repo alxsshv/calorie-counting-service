@@ -1,5 +1,7 @@
 package com.alxsshv.controller;
 
+import com.alxsshv.model.Goal;
+import com.alxsshv.model.Sex;
 import com.alxsshv.dto.DayReportDto;
 import com.alxsshv.model.*;
 import com.alxsshv.repository.DishRepository;
