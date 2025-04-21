@@ -6,6 +6,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**Класс описывает сущность "Отчет за день", содержит
+ * описание полей отчета о питании пользователя.
+ * @author Шварёв Алексей
+ * @version 1.0*/
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -13,20 +17,32 @@ import java.time.LocalDate;
 @Builder
 @Entity
 public class DayReport {
+    /**Дата на которую сформирован отчет. */
     @Id
     @Convert(attributeName = "date", converter = SqlDateToLocalDateConverter.class)
     private LocalDate date;
+    /**Количество приёмов пищи.*/
     @Column(name = "food_intakes_number")
     private long foodIntakesNumber;
+    /**Количество белков за день
+     * в граммах.*/
     @Column(name = "proteins_sum")
     private double proteinsSum;
+    /**Количество жиров за день
+     * в граммах.*/
     @Column(name = "fats_sum")
     private double fatsSum;
+    /**Количество углеводов за день
+     * в граммах.*/
     @Column(name = "carbohydrates_sum")
     private double carbohydratesSum;
+    /**Количество калорий за день
+     *  в килокалориях.*/
     @Column(name = "day_calorie_sum")
     private double dayCalorieSum;
 
+    /**Метод для преобразования объекта класса
+     *  DayReport в строковое представление.*/
     @Override
     public String toString() {
         return "DayReport{" +
