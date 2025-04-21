@@ -31,7 +31,7 @@ public class DishDto {
 
     /**Калорийность блюда в килокалориях на 100 грамм продукта.*/
     @Max(value = DishViolationsConstants.UPPER_CALORIE_LIMIT,
-            message = "Слишком большое количество килокаллорий "
+            message = "Слишком большое количество килокалорий "
                     + "в 100 граммах продукта")
     @Min(value = DishViolationsConstants.LOWER_CALORIE_LIMIT,
             message = "Значение калорийности не может быть отрицательным")
@@ -60,7 +60,7 @@ public class DishDto {
             message = "В 100 граммах продукта"
                     + " не может быть более 100 граммов углеводов")
     @Min(value = DishViolationsConstants.LOWER_CARBOHYDRATES_LIMIT,
-            message = "Значение содержания угловодов"
+            message = "Значение содержания углеводов"
                     + " не может быть отрицательным")
     private double carbohydratesAmount;
 
