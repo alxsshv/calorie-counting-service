@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 /**Интерфейс, описывающий методы получения
- *  отчетов о питании пользователя из БД*/
+ *  отчетов о питании пользователя из БД.*/
 public interface DayReportRepository
         extends JpaRepository<DayReport, LocalDate> {
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**Интерфейс, описывающий CRUD методы
- * работы с сущностью {@link User}*/
+ * работы с сущностью {@link User}.*/
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     /**Метод для получения пользователя по адресу электронной почты.

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**Интерфейс описывает методы работы с сущностью блюдо {@link Dish}) */
+/**Интерфейс описывает методы работы с сущностью блюдо {@link Dish}).*/
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Long> {
     /**Метод для получения блюда по названию.

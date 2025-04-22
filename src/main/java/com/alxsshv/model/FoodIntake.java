@@ -59,11 +59,11 @@ public class FoodIntake {
      *  экземпляра класса FoodIntake.*/
     @Override
     public String toString() {
-        return "FoodIntake{" +
-                "id=" + id +
-                ", user=" + user +
-                ", date=" + date +
-                ", servingSizes=" + servingSizes +
-                '}';
+        return "FoodIntake{"
+               + "id=" + id
+               + ", user=" + user
+               + ", date=" + date
+               + ", servingSizes=" + servingSizes
+               + '}';
     }
 }

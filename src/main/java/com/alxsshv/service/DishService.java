@@ -9,18 +9,20 @@ import jakarta.validation.constraints.Min;
 import java.util.List;
 
 /**Интерфейс, описывающий методы работы
- * с сущностью {@link com.alxsshv.model.Dish}
+ * с сущностью {@link com.alxsshv.model.Dish}.
  * @author Шварёв Алексей
  * @version 1.0*/
 public interface DishService {
 
     /**Метод создания записи о блюде.
-     * @param dishDto - объект передачи данных для {@link com.alxsshv.model.Dish}
+     * @param dishDto - объект передачи данных
+     * для {@link com.alxsshv.model.Dish}
      * */
     void createDish(@Valid @DishNotExist DishDto dishDto);
 
-    /**Метод предназначен для получения всех записей о блюдах;
-     * @return возвращает список объектов передачи данных для класса {@link Dish}*/
+    /**Метод предназначен для получения всех записей о блюдах.
+     * @return возвращает список объектов передачи
+     * данных для класса {@link Dish}*/
     List<DishDto> findAll();
 
     /**Метод поиска записи о блюде по id.
@@ -42,7 +44,8 @@ public interface DishService {
             message = "Неверный формат id") long id);
 
     /**Метод изменения данных в записи о блюде.
-     * @param dishDto - объект передачи данных для {@link com.alxsshv.model.Dish}.
+     * @param dishDto - объект передачи данных
+     * для {@link com.alxsshv.model.Dish}.
      * @exception jakarta.persistence.EntityNotFoundException
      * должно выбрасываться если запись о блюде с указанным в dishDto
      * идентификатором (id) не найдена*/

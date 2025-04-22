@@ -7,7 +7,6 @@ import com.alxsshv.repository.DayReportRepository;
 import com.alxsshv.service.DayReportService;
 import com.alxsshv.service.validation.IsValidDate;
 import com.alxsshv.service.validation.UserIsPresent;
-import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

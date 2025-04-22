@@ -47,7 +47,7 @@ public class User {
     /**Пол пользователя.*/
     @Column(name = "sex")
     private Sex sex;
-    /**Дневная норма калорий в килокалориях*/
+    /**Дневная норма калорий в килокалориях.*/
     @Column(name = "calorie_norm")
     private double calorieNorm;
 
@@ -59,7 +59,7 @@ public class User {
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
-        };
+        }
         User user = (User) o;
         return id == user.id && age == user.age
                 && weight == user.weight && height == user.height
