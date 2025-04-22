@@ -5,7 +5,7 @@ import com.alxsshv.model.User;
 import org.springframework.stereotype.Component;
 
 /**Класс предназначен для рассчета дневной нормы каллорий пользователя.
- * Рассчет выполняется на основе уравнений Харриса-Беннета
+ * Рассчет выполняется на основе уравнений Харриса-Бенедикта
  * (пересмотренных Миффлином и Сент-Джором)*/
 @Component
 public class BmrCalculatorImpl implements BmrCalculator {
@@ -17,7 +17,11 @@ public class BmrCalculatorImpl implements BmrCalculator {
      * в формате double в киллокаллориях*/
     @Override
     public double calculate(User user) {
-        int sexVariable = user.getSex().equals(Sex.MAN) ? 5 : -161;
-        return (10 * user.getWeight()) + (6.25 * user.getHeight()) - (5 * user.getAge()) + sexVariable;
+        double weightMultiplier = 10.0d;
+        double heightMultiplier = 6.25d;
+        double ageMultiplier = 5.0d;
+        double sexVariable = user.getSex().equals(Sex.MAN) ? 5 : -161;
+        return (weightMultiplier * user.getWeight()) + (heightMultiplier * user.getHeight())
+                - (ageMultiplier * user.getAge()) + sexVariable;
     }
 }

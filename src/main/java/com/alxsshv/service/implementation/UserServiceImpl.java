@@ -10,7 +10,6 @@ import com.alxsshv.service.utils.BmrCalculator;
 import com.alxsshv.service.validation.UserNotExist;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
