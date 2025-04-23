@@ -33,7 +33,8 @@ public interface FoodIntakeMapper {
     /**Дефолтный метод для получения userId при маппинге
      * foodIntakeDto из класса {@link FoodIntake}.
      * @param user - объект класса {@link User},
-     * указанный в свойстве сущности FoodIntake*/
+     * указанный в свойстве сущности FoodIntake.
+     * @return возвращает числовой идентифкатор пользователя (long)*/
     @Named("mapUserId")
     default long mapUserId(User user) {
             return user.getId();

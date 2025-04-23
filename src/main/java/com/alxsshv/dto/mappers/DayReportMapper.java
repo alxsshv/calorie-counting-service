@@ -25,7 +25,7 @@ public interface DayReportMapper {
 
     /**Метод преобразования списка (массива) сущностей {@link DayReport}
      * в список объектов класса DayReportDto.
-     * @param dayReports- Список (List) объектов класса DayReport (пользователь сервиса).
+     * @param dayReports - список (List) объектов класса DayReport (пользователь сервиса).
      * @return возвращает список (List) объектов передачи данных ({@link DayReportDto}) */
     List<DayReportDto> toDtoList(List<DayReport> dayReports);
 }
