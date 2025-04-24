@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DishNotExistValidator.class)
 public @interface DishNotExist {
-    String message() default "Блюдо с таким" +
-            " названием уже существует";
+    String message() default "Блюдо с таким"
+            + " названием уже существует";
 
     Class<?>[] groups() default { };
 

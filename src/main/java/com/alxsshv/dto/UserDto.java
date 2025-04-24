@@ -1,7 +1,5 @@
 package com.alxsshv.dto;
 
-import com.alxsshv.model.Goal;
-import com.alxsshv.model.Sex;
 import com.alxsshv.service.validation.UserViolationsConstants;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -62,12 +60,12 @@ public class UserDto {
     private int height;
 
     /**Псевдоим цели использования сервиса
-     * из перечисления {@link Goal}.*/
+     * из перечисления {@link com.alxsshv.model.Goal}.*/
     @NotNull(message = "Пожалуйста укажите цель подсчета калорий")
     @NotEmpty(message = "Пожалуйста выбрите цель из возможных вариантов:"
             + " похудение, поддержание, набор массы")
     private String goal;
-    /**Пол пользователя из перечисления {@link Sex}.*/
+    /**Пол пользователя из перечисления {@link com.alxsshv.model.Sex}.*/
     @NotNull(message = "Пожалуйста укажите пол пользователя")
     @NotEmpty(message = "Пожалуйста укажите пол пользователя:"
             + " мужчина или женщина")

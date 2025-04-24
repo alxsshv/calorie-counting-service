@@ -14,8 +14,8 @@ public class DishNotExistValidator implements ConstraintValidator<DishNotExist, 
     private DishRepository dishRepository;
 
     @Override
-    public boolean isValid(DishDto dishDto, ConstraintValidatorContext constraintValidatorContext) {
-        Optional<Dish> dishOpt = dishRepository.findByTitle(dishDto.getTitle());
+    public boolean isValid(final DishDto dishDto, final ConstraintValidatorContext constraintValidatorContext) {
+        final Optional<Dish> dishOpt = dishRepository.findByTitle(dishDto.getTitle());
         return dishOpt.isEmpty();
     }
 }

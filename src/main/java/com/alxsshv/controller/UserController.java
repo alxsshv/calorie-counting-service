@@ -1,7 +1,7 @@
 package com.alxsshv.controller;
 
-import com.alxsshv.model.Goal;
 import com.alxsshv.dto.UserDto;
+import com.alxsshv.model.Goal;
 import com.alxsshv.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @Slf4j
 public class UserController {
+    /**Сервис, реализующей бизнеслогику обработки запросов
+     * в части информации о пользователях.*/
     @Autowired
     private UserService userService;
 
@@ -31,7 +33,7 @@ public class UserController {
      * успешном добавлении пользователя.*/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String addUser(@RequestBody UserDto userDto){
+    public String addUser(@RequestBody final UserDto userDto) {
         userService.createUser(userDto);
         String successMessage = "Создан пользователь " + userDto.getName();
         log.info(successMessage);

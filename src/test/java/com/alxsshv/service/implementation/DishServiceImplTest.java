@@ -111,6 +111,8 @@ public class DishServiceImplTest {
         dishService.updateDish(dishDto);
         Mockito.verify(dishRepository,Mockito.times(1))
                 .save(Mockito.any(Dish.class));
+        Mockito.verify(dishMapper, Mockito.times(1))
+                .updateDishFromDishDto(dish, dishDto);
     }
 
     @Test

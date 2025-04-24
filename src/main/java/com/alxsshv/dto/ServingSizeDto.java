@@ -37,10 +37,10 @@ public class ServingSizeDto {
      *  экземпляра класса ServingSizeDto.*/
     @Override
     public String toString() {
-        return "ServingSizeDto{" +
-                "id=" + id +
-                ", dish=" + dish +
-                ", amount=" + amount +
-                '}';
+        return "ServingSizeDto{"
+                + "id=" + id
+                + ", dish=" + dish
+                + ", amount=" + amount
+                + '}';
     }
 }

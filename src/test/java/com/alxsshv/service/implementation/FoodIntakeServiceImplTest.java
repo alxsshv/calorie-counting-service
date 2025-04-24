@@ -96,4 +96,26 @@ public class FoodIntakeServiceImplTest {
                 () -> foodIntakeService.findById(foodIntakeId));
     }
 
+    @Test
+    @DisplayName("Test findById when foodIntake found then delete success")
+    public void testFindById_whenFoodIntakeFound_thenDeleteSuccess() {
+        long foodIntakeId = 1L;
+        when(foodIntakeRepository.findById(foodIntakeId))
+                .thenReturn(Optional.of(new FoodIntake()));
+        foodIntakeService.deleteById(foodIntakeId);
+        verify(foodIntakeRepository, times(1)).delete(any(FoodIntake.class));
+    }
+
+    @Test
+    @DisplayName("Test deleteById when foodIntake not found then throw exception")
+    public void testDeleteById_whenFoodIntakeNotFound_thenThrowException() {
+        long foodIntakeId = 1L;
+        when(foodIntakeRepository.findById(foodIntakeId))
+                .thenReturn(Optional.empty());
+        Assertions.assertThrows(EntityNotFoundException.class,
+                () -> foodIntakeService.deleteById(foodIntakeId));
+        verify(foodIntakeRepository, never()).delete(any(FoodIntake.class));
+    }
+
+
 }

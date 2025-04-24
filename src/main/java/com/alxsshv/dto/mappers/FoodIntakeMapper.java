@@ -1,6 +1,5 @@
 package com.alxsshv.dto.mappers;
 
-import com.alxsshv.dto.DishDto;
 import com.alxsshv.dto.FoodIntakeDto;
 import com.alxsshv.model.FoodIntake;
 import com.alxsshv.model.User;
@@ -20,7 +19,7 @@ public interface FoodIntakeMapper {
 
     /**Метод преобразования FoodIntakeDto в сущность
      * {@link FoodIntake} (приём пищи).
-     * @param foodIntakeDto - объект передачи данных({@link DishDto}).
+     * @param foodIntakeDto - объект передачи данных({@link com.alxsshv.dto.DishDto}).
      * @return возвращает объект класса {@link FoodIntake}.*/
     FoodIntake toEntity(FoodIntakeDto foodIntakeDto);
 
