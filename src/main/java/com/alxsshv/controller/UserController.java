@@ -1,7 +1,6 @@
 package com.alxsshv.controller;
 
 import com.alxsshv.dto.UserDto;
-import com.alxsshv.model.Goal;
 import com.alxsshv.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class UserController {
      * Поля userDto должны соответстовать требованиям:
      * Имя пользователя не может быть пустым,
      * адрес электронной почты должен быть уникальным.
-     * Цель должна соответствовать значениям перечисления {@link Goal}.
+     * Цель должна соответствовать значениям перечисления {@link com.alxsshv.model.Goal}.
      *@return возвращает строку с сообщением об
      * успешном добавлении пользователя.*/
     @PostMapping
@@ -62,7 +61,7 @@ public class UserController {
      * Поля userDto должны соответстовать требованиям:
      * Имя пользователя не может быть пустым,
      * адрес электронной почты должен быть уникальным.
-     * Цель должна соответствовать значениям перечисления {@link Goal}.
+     * Цель должна соответствовать значениям перечисления {@link com.alxsshv.model.Goal}.
      *@return возвращает строку с сообщением об
      * успешном изменени данных пользователя.*/
     @PutMapping

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
  * Аннотация для применения логики проверки
  * на отсутствие пользователя в БД.
- * Аннотация может быть применения к
+ * Аннотация может быть применена к
  * параметрам метода.
  * @author Шварёв Алексей
  * @version 1.0
@@ -19,10 +19,21 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UserNotExistValidator.class)
 public @interface UserNotExist {
-    String message() default "Пользователь с таким" +
-            " адресом электронной почты уже существует";
+    /**Сообщение, выводимое
+     * при ошибке валидации
+     * (когда пользователь существует).
+     * @return возвращает строку с сообщением.*/
+    String message() default "Пользователь с таким"
+            + " адресом электронной почты уже существует";
 
+    /**Группы ограничений.
+     * @return возвращает массив классов.*/
     Class<?>[] groups() default { };
 
+    /**Набор классов полезной нагрузки,
+     * логика которых выполняется при
+     * возникновении ошибки валидации.
+     * @return возвращает массив классов,
+     * расширяющих класс Payload.*/
     Class<? extends Payload>[] payload() default { };
 }

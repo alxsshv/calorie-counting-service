@@ -18,6 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/reports")
 public class ReportController {
+    /**Сервисный слой, реализующий логику обработки запросов
+     *  в части формирования отчетов.*/
     @Autowired
     private DayReportService dayReportService;
 

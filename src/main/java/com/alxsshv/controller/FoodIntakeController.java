@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/v1/food")
 @Slf4j
 public class FoodIntakeController {
+    /**Сервисный слой для обработки запросов
+     *  в части записей о приёмах пищи.*/
     @Autowired
     private FoodIntakeService foodIntakeService;
 
@@ -30,7 +32,7 @@ public class FoodIntakeController {
      * успешном добавлении приёма пищи.*/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String addFoodIntake(@RequestBody FoodIntakeDto foodIntakeDto) {
+    public String addFoodIntake(@RequestBody final FoodIntakeDto foodIntakeDto) {
         foodIntakeService.createFoodIntake(foodIntakeDto);
         String successMessage = "Прием пищи добавлен";
         log.info(successMessage);
@@ -45,8 +47,8 @@ public class FoodIntakeController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FoodIntakeDto> findAllByUserAndDate(
-            @RequestParam(value = "user", defaultValue = "0") long userId,
-            @RequestParam(value = "date", defaultValue = "-999999999-01-01") LocalDate date) {
+            @RequestParam(value = "user", defaultValue = "0") final long userId,
+            @RequestParam(value = "date", defaultValue = "-999999999-01-01") final LocalDate date) {
         return foodIntakeService.findAllByUserIdAndDate(userId, date);
     }
 
@@ -55,7 +57,7 @@ public class FoodIntakeController {
      * @return возвращает объект {@link FoodIntakeDto}*/
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FoodIntakeDto findById(@PathVariable("id") long id) {
+    public FoodIntakeDto findById(@PathVariable("id") final long id) {
         return foodIntakeService.findById(id);
     }
 
@@ -65,7 +67,7 @@ public class FoodIntakeController {
      *  сведений о приёме пищи.*/
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteById(@PathVariable("id") long id) {
+    public String deleteById(@PathVariable("id") final long id) {
         foodIntakeService.deleteById(id);
         String successMessage = "Запись о приеме пищи успешно удалена";
         log.info(successMessage);

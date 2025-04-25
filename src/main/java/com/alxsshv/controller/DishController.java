@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/v1/dishes")
 @Slf4j
 public class DishController {
+    /**Сервисный слой, реализующий логику обрабокт запросов
+     * в части записей о блюдах.*/
     @Autowired
     private DishService dishService;
 
@@ -30,7 +32,7 @@ public class DishController {
      * успешном добавлении блюда.*/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String createDish(@RequestBody DishDto dishDto) {
+    public String createDish(@RequestBody final DishDto dishDto) {
         dishService.createDish(dishDto);
         String successMessage = "Добавлено новое блюдо: " + dishDto.getTitle();
         log.info(successMessage);
@@ -50,7 +52,7 @@ public class DishController {
      * @return возвращает объект {@link DishDto}*/
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public DishDto findDishById(@PathVariable("id") long id) {
+    public DishDto findDishById(@PathVariable("id") final long id) {
         return dishService.findById(id);
     }
 
@@ -63,7 +65,7 @@ public class DishController {
      * успешном изменении блюда.*/
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public String updateDish(@RequestBody DishDto dishDto) {
+    public String updateDish(@RequestBody final DishDto dishDto) {
         dishService.updateDish(dishDto);
         String successMessage = "Сведения о блюде: " + dishDto.getTitle()
                 + " успешно обновлены";
@@ -76,7 +78,7 @@ public class DishController {
      * @return возвращает сообщение об успешном удалении блюда.*/
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteDish(@PathVariable("id") long id) {
+    public String deleteDish(@PathVariable("id") final long id) {
         dishService.deleteById(id);
         String successMessage = "Запись о блюде успешно удалена";
         log.info(successMessage);

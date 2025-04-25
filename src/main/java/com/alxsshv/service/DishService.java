@@ -17,7 +17,7 @@ public interface DishService {
     /**Метод создания записи о блюде.
      * @param dishDto - объект передачи данных
      * для {@link com.alxsshv.model.Dish}
-     * */
+     */
     void createDish(@Valid @DishNotExist DishDto dishDto);
 
     /**Метод предназначен для получения всех записей о блюдах.
@@ -26,7 +26,7 @@ public interface DishService {
     List<DishDto> findAll();
 
     /**Метод поиска записи о блюде по id.
-     * @param id - числовой идентификатор пользователя в формате long.
+     * @param id - числовой идентификатор блюда в формате long.
      * @return возвращает объект класса {@link Dish}.
      * @exception jakarta.persistence.EntityNotFoundException
      * должно выбрасываться если запись о блюде с указанным
@@ -35,7 +35,7 @@ public interface DishService {
             message = "Неверный формат id") long id);
 
     /**Метод поиска записи о блюде по id.
-     * @param id - числовой идентификатор пользователя в формате long.
+     * @param id - числовой идентификатор блюда в формате long.
      * @return возвращает объект класса {@link DishDto}.
      * @exception jakarta.persistence.EntityNotFoundException
      * должно выбрасываться если запись о блюде с указанным

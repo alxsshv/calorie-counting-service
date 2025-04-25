@@ -9,7 +9,10 @@ import com.alxsshv.model.User;
  * @version 1.0
  */
 public interface BmrCalculator {
-    /**Метод вычисления дневной
-     *  нормы калорий.*/
+    /**Метод рассчета дневной нормы каллорий.
+     * @param user - пользователь, для которого
+     * выполняется рассчет.
+     * @return возвращает дневную норму каллорий
+     * в формате double в киллокаллориях*/
     double calculate(User user);
 }

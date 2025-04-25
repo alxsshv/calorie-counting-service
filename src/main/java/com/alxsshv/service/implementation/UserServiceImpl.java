@@ -1,8 +1,10 @@
 package com.alxsshv.service.implementation;
 
+import com.alxsshv.dto.DishDto;
 import com.alxsshv.dto.UserDto;
 import com.alxsshv.dto.mappers.UserMapper;
 import com.alxsshv.exception.DataProcessingException;
+import com.alxsshv.model.Dish;
 import com.alxsshv.model.User;
 import com.alxsshv.repository.UserRepository;
 import com.alxsshv.service.UserService;
@@ -19,17 +21,30 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 import java.util.Optional;
 
+/**Класс, описывающий логику работы
+ * с сущностью {@link com.alxsshv.model.User}.
+ * @author Шварёв Алексей
+ * @version 1.0*/
 @Service
 @Validated
 @Slf4j
 public class UserServiceImpl implements UserService {
+    /**Репозиторий для получения сведений
+     * о пользователях из базы данных.*/
     @Autowired
     private UserRepository userRepository;
+    /**Интерфеейс для двухстороннего преобразования
+     * сущности {@link Dish} в DTO {@link DishDto}.
+     */
     @Autowired
     private UserMapper userMapper;
+    /**Интерфейс для вычисления
+     * дневной нормы калорий пользователя.*/
     @Autowired
     private BmrCalculator bmrCalculator;
 
+    /**Метод создания записи о пользователе в БД.
+     * @param userDto - DTO для класса {@link com.alxsshv.model.User}.*/
     @Transactional
     @Override
     public void createUser(@Valid @UserNotExist final UserDto userDto) {
@@ -39,6 +54,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    /**Метод поиска записи о пользователе по id.
+     * @param id - идентификатор пользователя в формате long.
+     * @return возвращает объект класса {@link User}.
+     * @exception jakarta.persistence.EntityNotFoundException
+     * должно выбрасываться если запись о пользователе с указанным
+     * идентификатором (id) не найдена*/
     @Override
     public User getById(final long id) {
         Optional<User> userOpt = userRepository.findById(id);
@@ -50,18 +71,29 @@ public class UserServiceImpl implements UserService {
         return userOpt.get();
     }
 
+    /**Метод поиска записи о пользователе по id.
+     * @param id - идентификатор пользователя в формате long.
+     * @return возвращает DTO для класса {@link User}.
+     * @exception jakarta.persistence.EntityNotFoundException
+     * должно выбрасываться если запись о пользователе с указанным
+     * идентификатором (id) не найдена*/
     @Override
     public UserDto findById(final long id) {
         User user = getById(id);
         return userMapper.toUserDto(user);
     }
 
+    /**Метод для получения всех записей о пользователях.
+     * @return возвращает список DTO для класса {@link User},
+     * если записей нет - возвращается пустой список*/
     @Override
     public List<UserDto> findAll() {
         List<User> users = userRepository.findAll();
         return userMapper.toUserDtoList(users);
     }
 
+    /**Метод изменения данных о пользователе.
+     * @param userDto - DTO для класса {@link User}*/
     @Transactional
     @Override
     public void update(@Valid final UserDto userDto) {
@@ -79,6 +111,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userFromDb);
     }
 
+    /**Метод удаления записи о пользователе по id.
+     * @param id - идентификатор пользователя в формате long
+     * (положительное значение больше нуля).*/
     @Override
     public void deleteById(final long id) {
        User userFromDb = getById(id);

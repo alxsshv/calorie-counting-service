@@ -16,7 +16,7 @@ public class BmrCalculatorImpl implements BmrCalculator {
      * @return возвращает дневную норму каллорий
      * в формате double в киллокаллориях*/
     @Override
-    public double calculate(User user) {
+    public double calculate(final User user) {
         double weightMultiplier = 10.0d;
         double heightMultiplier = 6.25d;
         double ageMultiplier = 5.0d;

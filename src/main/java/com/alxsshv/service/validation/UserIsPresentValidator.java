@@ -19,11 +19,14 @@ import java.util.Optional;
 @Validated
 public class UserIsPresentValidator
         implements ConstraintValidator<UserIsPresent, Long> {
+    /**Репозиторий для получения сведений
+     *  о пользователе из базы данных.*/
     @Autowired
     private UserRepository userRepository;
 
     /**Метод проверки на существование пользователя с указанным id.
      * @param userId - идентификатор (id) пользователя в формате long.
+     * @param constraintValidatorContext - контекст валидации.
      * @return возрващает true, если запись о пользователе
      * с указанным id имеется в базе данных или возващает false,
      * если запись о пользователе с указанным id не найдена. */

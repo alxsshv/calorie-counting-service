@@ -17,11 +17,14 @@ import java.util.Optional;
  */
 public class UserNotExistValidator
         implements ConstraintValidator<UserNotExist, UserDto> {
+    /**Репозиторий для получения сведений
+     *  о пользователе из базы данных.*/
     @Autowired
     private UserRepository userRepository;
 
     /**Метод, реализующий логику проверки на отсутствие пользователя в БД.
      * @param userDto - объект передачи данных {@link UserDto}.
+     * @param constraintValidatorContext - контекст валидации.
      * Для поиска пользователя в БД используется свойство объекта userDto -
      * email (адрес электронной почты).
      * @return возвращает true если пользователь на найден в БД или false
