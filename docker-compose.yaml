@@ -1,0 +1,29 @@
+services:
+  calorie-counting-service:
+    image: "alxsshv/calorie-counting-service:v.1.0.0"
+    container_name: calorie-counting-service
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/calorie_db
+      SPRING_DATASOURCE_USERNAME: jUser
+      SPRING_DATASOURCE_PASSWORD: jPassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+    ports:
+      - "8080:8080"
+
+  database:
+    image: "postgres:17"
+    container_name: "database"
+    environment:
+      POSTGRES_DB: "calorie_db"
+      POSTGRES_USER: "jUser"
+      POSTGRES_PASSWORD: "jPassword"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -UjUser -dcalorie_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

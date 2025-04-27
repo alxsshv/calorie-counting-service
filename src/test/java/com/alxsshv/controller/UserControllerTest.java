@@ -12,6 +12,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Optional;
 
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest {
     @LocalServerPort
@@ -47,6 +49,7 @@ public class UserControllerTest {
 
     @BeforeEach
     public void fillDatabase() {
+
         User user1 = new User();
         user1.setName("Иван");
         user1.setEmail("ivan@world.com");
@@ -97,7 +100,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("test addUser when send email field is incorrectly" +
+    @DisplayName("Test addUser when send email field is incorrectly" +
             "then return status 400 (BAD_REQUEST)")
     public void testAddUser_whenEmailFiledIsIncorrectly_thenReturn400() {
         String email = "senyaworld.com";

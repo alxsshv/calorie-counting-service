@@ -6,12 +6,18 @@ import com.alxsshv.model.*;
 import com.alxsshv.repository.DishRepository;
 import com.alxsshv.repository.FoodIntakeRepository;
 import com.alxsshv.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
 
+/**Класс для заполнения базы данных исходными данными
+ *  для ознакомления с проектом.
+ *  Класс не используется при тестировании.*/
 @Configuration
+@Profile({"docker", "default"})
 public class Initializer {
     @Autowired
     private UserRepository userRepository;
@@ -20,10 +26,8 @@ public class Initializer {
     @Autowired
     private FoodIntakeRepository foodIntakeRepository;
 
-   // @PostConstruct
+    @PostConstruct
     public void init() {
-        System.out.println("Заполнение БД...");
-
         User user1 = new User();
         user1.setName("Иван");
         user1.setEmail("ivan@world.com");

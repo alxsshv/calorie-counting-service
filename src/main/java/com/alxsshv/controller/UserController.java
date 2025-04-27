@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @Slf4j
 public class UserController {
-    /**Сервис, реализующей бизнеслогику обработки запросов
+    /**Сервис, реализующей бизнес логику обработки запросов
      * в части информации о пользователях.*/
     @Autowired
     private UserService userService;

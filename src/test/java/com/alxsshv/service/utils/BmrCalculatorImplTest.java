@@ -7,7 +7,9 @@ import com.alxsshv.service.validation.UserViolationsConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 public class BmrCalculatorImplTest {
     private final BmrCalculator bmrCalculator = new BmrCalculatorImpl();
     private static final double EPSILON = 0.000001d;

@@ -3,10 +3,12 @@ package com.alxsshv.dto.converters;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
+@ActiveProfiles("test")
 public class TestSqlDateToLocalDateConverterTest {
     private static final String DATE_TEMPLATE = "2025-04-25";
     private final SqlDateToLocalDateConverter converter = new SqlDateToLocalDateConverter();
